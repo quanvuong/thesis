@@ -542,7 +542,7 @@ All rights reserved.}
 % (EVM, 9/19/94)
 
 \phantomsection
-\addcontentsline{toc}{frontmatter}{\protect\numberline{}Signature Page}%
+\addcontentsline{toc}{frontmatter}{\protect\numberline{}Dissertation Approval Page}%
 \begin{alwayssingle}
 \null\vfill
 \begin{center}
