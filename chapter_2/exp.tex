@@ -14,11 +14,6 @@ We demonstrate the performance of our proposed algorithm (Sec. \ref{sec_exp_eval
         \begin{figure}[H]
             \centering
             \includegraphics[width=\textwidth]{chapter_2/fig/legend_baseline.png}
-            \caption{Results on unseen test tasks.
-                x-axis is training epochs.
-                y-axis is average episode returns.
-                The shaded areas denote one std.
-            }\label{fig:testing_performance}
         \end{figure}
     \end{minipage}
     \hfill
@@ -53,6 +48,11 @@ We demonstrate the performance of our proposed algorithm (Sec. \ref{sec_exp_eval
             \end{subfigure}}
 
     \end{minipage}
+    \caption{Results on unseen test tasks.
+        x-axis is training epochs.
+        y-axis is average episode returns.
+        The shaded areas denote one std.
+    }\label{fig:testing_performance}
 \end{figure}
 
 We evaluate in five challenging task distributions from MuJoCo \cite{todorov2012mujoco} and a modified task distribution UmazeGoal-M from D4RL \cite{fu2020d4rl}. In AntDir and HumanoidDir-M, a target direction defines a task. The agent maximizes returns by running with maximal speed in the target direction. In AntGoal and UmazeGoal-M, a task is defined by a goal location, to which the agent should navigate. In HalfCheetahVel, a task is defined as a constant velocity the agent should achieve. We also consider the WalkerParam environment where random physical parameters parameterize the agent, inducing different transition functions in each task. The state for each task distribution is the OpenAI gym state. We do not include the task-specific information, such as the goal location or the target velocity in the state. The target directions and goals are sampled from a $120^{\circ}$ circular arc. Details of these task distributions can be found in Appendix \ref{sec_env_detail}.
@@ -63,10 +63,10 @@ There are two natural baselines. The first is by modifying PEARL \cite{rakelly20
 
 We measure performance by the average returns over unseen tasks, sampled from the same task distribution. We do not count the first two episodes' returns \cite{rakelly2019efficient}. We obtain the batch for each training task by training Soft Actor Critic (SAC) \cite{haarnoja2018soft} with a fixed number of environment interactions. \autoref{sec_env_baseline} provide more details on the environment setups and training procedures of the baselines.
 
-\begin{wrapfigure}{R}{0.259\textwidth}
+\begin{wrapfigure}{R}{0.35\textwidth}
     \vspace{-0.6em}
     \flushright
-    \begin{subfigure}{0.155\paperwidth}
+    \begin{subfigure}{0.259\paperwidth}
         % \includegraphics[width=\linewidth, right]{chapter_2/fig/metagenrl.png}
         \includegraphics[width=\linewidth]{chapter_2/fig/metagenrl.png}
     \end{subfigure}
@@ -88,11 +88,6 @@ Combining MetaGenRL and MBML is interesting since MetaGenRL generalizes to out-o
         \begin{figure}[H]
             \centering
             \includegraphics[width=\textwidth]{chapter_2/fig/legend_ablation.png}
-            \caption{Ablation study.
-                x-axis is training epochs.
-                y-axis is average episode returns.
-                The shaded areas denote one std.
-            }\label{fig:ablation}
         \end{figure}
     \end{minipage}
     \hfill
@@ -128,6 +123,11 @@ Combining MetaGenRL and MBML is interesting since MetaGenRL generalizes to out-o
 
     \end{minipage}
 
+    \caption{Ablation study.
+        x-axis is training epochs.
+        y-axis is average episode returns.
+        The shaded areas denote one std.
+    }\label{fig:ablation}
 \end{figure}
 
 We emphasize that our contributions lie in the triplet loss design coupled with transitions relabelling. Below, we provide ablation studies to demonstrate that both are crucial to obtain superior performance.
@@ -155,10 +155,10 @@ More concretely, given the context set ${\bf c}_i$ from task $i$, we sample an e
 
 Fig. \ref{fig:ablation} compares our full model and the ablated versions. Our full model obtains higher returns than most of the ablated versions. For WalkerParam, our full model does not exhibit improvement over  \textbf{Neither}. However, from Fig. \ref{fig:testing_performance}, our full model significantly outperforms the baselines. We thus conclude that, in WalkerParam, the improvement over the baselines comes from distillation.
 
-\begin{wrapfigure}{R}{0.239\textwidth}
+\begin{wrapfigure}{R}{0.35\textwidth}
     \flushright
     \vspace{-0.5em}
-    \begin{subfigure}{0.16\paperwidth}
+    \begin{subfigure}{0.259\paperwidth}
         \includegraphics[width=\linewidth]{chapter_2/fig/reward_pred_error.png}
     \end{subfigure}
     \caption{Error on unseen task.}\label{fig:reward_error}
@@ -190,23 +190,23 @@ We also note that our initialization method does not require extensive hyper-par
 \begin{figure*}[t]
     \centering
     \makebox[\textwidth]{
-        \begin{subfigure}{0.125\paperwidth}
+        \begin{subfigure}{0.15\paperwidth}
             \includegraphics[width=\linewidth]{chapter_2/fig/init-sac-vs-train-AntDir.png}
         \end{subfigure}
 
-        \begin{subfigure}{0.125\paperwidth}
+        \begin{subfigure}{0.15\paperwidth}
             \includegraphics[width=\linewidth]{chapter_2/fig/init-sac-vs-train-AntGoal.png}
         \end{subfigure}
 
-        \begin{subfigure}{0.125\paperwidth}
+        \begin{subfigure}{0.15\paperwidth}
             \includegraphics[width=\linewidth]{chapter_2/fig/init-sac-vs-train-HalfCheetahVel.png}
         \end{subfigure}
 
-        \begin{subfigure}{0.125\paperwidth}
+        \begin{subfigure}{0.15\paperwidth}
             \includegraphics[width=\linewidth]{chapter_2/fig/init-sac-vs-train-HumanoidDir-M.png}
         \end{subfigure}
 
-        \begin{subfigure}{0.125\paperwidth}
+        \begin{subfigure}{0.15\paperwidth}
             \includegraphics[width=\linewidth]{chapter_2/fig/init-sac-vs-train-WalkerParam.png}
         \end{subfigure}}
     \small{\color{red}--- }: SAC initialized by our multi-task policy (Ours) \qquad  {\color{blue}--- }: Randomly initialized SAC (Random)
