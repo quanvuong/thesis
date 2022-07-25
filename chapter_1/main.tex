@@ -1,0 +1,68 @@
+\chapter{Introduction}
+
+\begin{displayquote}
+    Instead of trying to produce a programme to simulate the adult mind, why not rather try to produce one which simulates the child's? If this were then subjected to an appropriate course of education one would obtain the adult brain. -- Alan Turing
+\end{displayquote}
+
+In the same chapter where the famous quote above was written, 
+Alan Turing offers a principle from which such child-machine can be educated:
+"We normally associate punishments and rewards with the teaching process. 
+Some simple child-machines can be constructed or programmed on this sort of principle. 
+The machine has to be so constructed that events which shortly preceded the occurrence of a punishment-signal are unlikely to be repeated, whereas a reward-signal increased the probability of repetition of the events which led up to it" \cite{10.1093/mind/LIX.236.433}
+
+He went on to lament that "I have done some experiments with one such child-machine, and succeeded in teaching it a few things, but the teaching method was too unorthodox for the experiment to be considered really successful."
+Perhaps he would be relieved to learn that 70 years after these quotes were published, 
+reinforcement learning algorithms 
+have been demonstrated to be general purpose algorithms 
+that can learn from punishments and rewards signal to perform complex tasks. 
+
+The basic framework of Reinforcement Learning is as follows. 
+The learning agent interacts with an environment.
+The learning agent receives as input an observation and outputs an action, 
+after which the agent receives a scalar reward signal indicating
+how desirable the action was. 
+A \textit{successful} learning agent must use the reward signal to 
+infer the optimal action that leads to the highest possible reward.
+The development of Reinforcement Learning can be traced back to 
+the work by Richard Bellman on dynamic programming TODO
+and temporal difference learning by Richard Sutton TODO.
+Early attempts at developing Reinforcement Learning 
+algorithms that can solve complex real-world problems 
+were hindered by the lack of expressive representation and 
+resorted to table look-up or linear function,
+neither of which were adequate TODO(https://www.bkgm.com/articles/tesauro/tdl.html). 
+
+However, in recent years, deep neural networks have been proven 
+to be an expressive class of representation, that when trained with Reinforcement
+Learning algorithms, can represent complex behaviors and 
+solve practical real-world problems. 
+A particularly intriguing property of the approach is 
+its generality, having been successfully applied 
+to problems from seemingly unrelated domains,
+such as video games, robot grasping and computer chip design. TODO
+Such generality brings a tremendous amount of excitement 
+in that the approach 
+might open the door to previously unsolved scientific and 
+technological problems.
+
+In this thesis, I will present my research on Reinforcement Learning 
+and its applications to robotics. 
+All of the algorithms belong to the class of model-free 
+Reinforcement Learning method, which maintains 
+an estimate of how good an action is and picks 
+actions based on the estimates to maximize rewards. 
+I categorized my research into three categories.
+
+Chapter XX will present the first, which has to do with 
+develop new Reinforcement Learning algorithms 
+
+- learning from offline datasets 
+
+- optimization inspired algorithms 
+
+Chapter XX will present teleoperation 
+
+- teleoperation 
+
+Chapter XX will present work on learning 
+from simulation

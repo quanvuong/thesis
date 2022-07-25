@@ -1,14 +1,8 @@
-\begin{thebibliography}{Mar83}
+\begin{thebibliography}{TUR50}
 
-\bibitem[Mar83]{Martin_1983}
-Robert~D. Martin.
-\newblock {\em Human Brain Evolution in an Ecological Context}.
-\newblock American Museum of Natural History, 1983.
-
-\bibitem[RI99]{Rilling_Insel_1999}
-James~K. Rilling and Thomas~R. Insel.
-\newblock The primate neocortex in comparative perspective using magnetic
-  resonance imaging.
-\newblock {\em Journal of Human Evolution}, 37(2):191--223, 1999.
+\bibitem[TUR50]{10.1093/mind/LIX.236.433}
+A.~M. TURING.
+\newblock {I.—COMPUTING MACHINERY AND INTELLIGENCE}.
+\newblock {\em Mind}, LIX(236):433--460, 10 1950.
 
 \end{thebibliography}
