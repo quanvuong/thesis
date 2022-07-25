@@ -25,7 +25,7 @@ We obtain the candidate action $a$ by passing $s$ through the candidate action g
 \begin{equation}\label{eq_loss_xi_i}
     \mathcal{L}_\xi = \frac{1}{K} \sum_{i=1}^{K} \mathlarger{\underset{\substack{s, {\bf c}_{i} \sim \mathcal{B}_i \\ \nu \sim \mathcal{N}(0,1)} }{\mathbb{E}}}\left[ || \xi_i(s, a) - \xi_D(s, a, \bar{\bf z}_i) || ^ 2 \right], \quad {\bf z}_i \sim q_\phi({\bf c}_{i}), \quad a = G_i(s, \nu)
 \end{equation}
-Note that the gradient of $\mathcal{L}_\xi$ also updates $G_i$. The final distillation loss is given in Eq. \ref{eq_distill_loss}. We parameterize $q_\phi, Q_D, G_D, \xi_D$ with feedforward NN as detailed in Appendix \ref{sec_hp_distillation}.
+Note that the gradient of $\mathcal{L}_\xi$ also updates $G_i$. The final distillation loss is given in Eq. \ref{eq_distill_loss}. We parameterize $q_\phi, Q_D, G_D, \xi_D$ with feedforward NN.
 \begin{equation}\label{eq_distill_loss}
     \mathcal{L}_{distill} = \mathcal{L}_Q + \mathcal{L}_G + \mathcal{L}_\xi.
 \end{equation}
@@ -62,7 +62,7 @@ Minimizing the distillation loss does not require the policy to learn the correc
 The multi-task policy should imitate different single-task policy depending on which batch the context set was sampled from.
 If the batches do not overlap in state-action visitation frequencies, the multi-task policy can simply correlate the state-action pairs in the context with which single-task policy it should imitate. In short, if minimizing the training objective on the given datasets does not require the policy to model the dependency of the task identity on the rewards in the context set, there is no guarantee the policy will model this dependency. This is not surprising given literature on the non-identifiability of causality from observations \cite{pearl_2009, Peters2017}. They also emphasize the benefit of using distribution change as training signal to learn the correct causal relationship \cite{Bengio2020A}.
 
-Inspired by this literature, we introduce a distribution change into our dataset by approximating the reward function of each task $i$ with a learned function $\hat{R}_i$ (training illustrated in \autoref{sec_ensemble}). Given a context set ${\bf c}_j$ from task $j$, we relabel the reward of each transition in ${\bf c}_j$ using $\hat{R}_i$. Let $t$ index the transitions and ${\bf c}_{j\rightarrow{i}}$ denote the set of the relabelled transitions, we illustrate this process below :
+Inspired by this literature, we introduce a distribution change into our dataset by approximating the reward function of each task $i$ with a learned function $\hat{R}_i$. Given a context set ${\bf c}_j$ from task $j$, we relabel the reward of each transition in ${\bf c}_j$ using $\hat{R}_i$. Let $t$ index the transitions and ${\bf c}_{j\rightarrow{i}}$ denote the set of the relabelled transitions, we illustrate this process below :
 \begin{equation}\label{eq_relabel}
     \quad {\bf c}_{j}=\left\{ \left(s_{j, t}, a_{j, t}, r_{j, t}, s_{j, t}^{\prime}\right) \right\}_t   \xrightarrow{\text{Relabelling}} {\bf c}_{j\rightarrow{i}} = \left\{ \left(s_{j, t}, a_{j, t}, \hat{R}_i(s_{j, t}, a_{j, t}), s_{j, t}^{\prime} \right) \right\}_t
 \end{equation}
@@ -120,4 +120,4 @@ The final loss to train the randomly initialized task inference module $q_\phi$,
     % \mathcal{L} = \mathcal{L}_{triplet} + \mathcal{L}_{reg} + \mathcal{L}_{distill}
     \mathcal{L} = \mathcal{L}_{triplet} + \mathcal{L}_Q + \mathcal{L}_G + \mathcal{L}_\xi.
 \end{equation}
-Alg. \ref{algo_mtbrl} illustrates the pseudo-code for the second phase of the distillation procedure. Detailed pseudo-code of the two-phases distillation procedures can be found in \autoref{sec_detailed_distill}. Fig. \ref{fig:action} briefly describes action selection from the multi-task policy. \autoref{sec_action} provides detailed explanations. In theory, we can also use the relabelled transitions in Eq. \ref{eq_relabel} to train the single-task BCQ policy in the first phase, which we do not since we focus on task inference in this work.
+Alg. \ref{algo_mtbrl} illustrates the pseudo-code for the second phase of the distillation procedure. In theory, we can also use the relabelled transitions in Eq. \ref{eq_relabel} to train the single-task BCQ policy in the first phase, which we do not since we focus on task inference in this work.

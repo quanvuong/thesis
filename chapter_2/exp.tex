@@ -2,8 +2,7 @@
 
 \newcommand{\mujocobaselinefigsize}{0.143}
 
-We demonstrate the performance of our proposed algorithm (Sec. \ref{sec_exp_eval}) and ablate the different design choices (Sec. \ref{sec_exp_ablation}). Sec. \ref{sec_exp_init_sac} shows that the multi-task policy can serve as a good initialization, significantly speeding up training on unseen tasks. \autoref{sec_hyper_param} provides all hyper-parameters.
-
+We demonstrate the performance of our proposed algorithm (Sec. \ref{sec_exp_eval}) and ablate the different design choices (Sec. \ref{sec_exp_ablation}). Sec. \ref{sec_exp_init_sac} shows that the multi-task policy can serve as a good initialization, significantly speeding up training on unseen tasks. 
 
 \subsection{Performance evaluation on unseen tasks}\label{sec_exp_eval}
 
@@ -55,13 +54,15 @@ We demonstrate the performance of our proposed algorithm (Sec. \ref{sec_exp_eval
     }\label{fig:testing_performance}
 \end{figure}
 
-We evaluate in five challenging task distributions from MuJoCo \cite{todorov2012mujoco} and a modified task distribution UmazeGoal-M from D4RL \cite{fu2020d4rl}. In AntDir and HumanoidDir-M, a target direction defines a task. The agent maximizes returns by running with maximal speed in the target direction. In AntGoal and UmazeGoal-M, a task is defined by a goal location, to which the agent should navigate. In HalfCheetahVel, a task is defined as a constant velocity the agent should achieve. We also consider the WalkerParam environment where random physical parameters parameterize the agent, inducing different transition functions in each task. The state for each task distribution is the OpenAI gym state. We do not include the task-specific information, such as the goal location or the target velocity in the state. The target directions and goals are sampled from a $120^{\circ}$ circular arc. Details of these task distributions can be found in Appendix \ref{sec_env_detail}.
+We evaluate in five challenging task distributions from MuJoCo \cite{todorov2012mujoco} and a modified task distribution UmazeGoal-M from D4RL \cite{fu2020d4rl}. In AntDir and HumanoidDir-M, a target direction defines a task. The agent maximizes returns by running with maximal speed in the target direction. In AntGoal and UmazeGoal-M, a task is defined by a goal location, to which the agent should navigate. In HalfCheetahVel, a task is defined as a constant velocity the agent should achieve. We also consider the WalkerParam environment where random physical parameters parameterize the agent, inducing different transition functions in each task. The state for each task distribution is the OpenAI gym state. We do not include the task-specific information, such as the goal location or the target velocity in the state. The target directions and goals are sampled from a $120^{\circ}$ circular arc.
 
-We argue that the version of HumanoidDir used in prior works does not represent a meaningful task distribution, where a single task policy can already achieve the optimal performance on unseen tasks. We thus modify the task distribution so that a policy has to infer the task identity to perform well, and denote it as HumanoidDir-M. More details of this task distribution can be found in \autoref{sec_humanoid}.
+We argue that the version of HumanoidDir used in prior works does not represent a meaningful task distribution, where a single task policy can already achieve the optimal performance on unseen tasks. We thus modify the task distribution so that a policy has to infer the task identity to perform well, and denote it as HumanoidDir-M. 
+% More details of this task distribution can be found in \autoref{sec_humanoid}.
 
 There are two natural baselines. The first is by modifying PEARL \cite{rakelly2019efficient} to train from the batch, instead of allowing PEARL to collect more transitions. We thus do not execute line $1-10$ in Algorithm 1 in the PEARL paper. On line 13, we sample the context and the RL batch uniformly from the batch. The second baseline is Contextual BCQ. We modify the networks in BCQ to accept the inferred task identity as input. We train the task inference module using the gradient of the value function loss. MBML and the baselines have the same network architecture. We are very much inspired by PEARL and BCQ. However, we do not expect PEARL to perform well in our setting because it does not explicitly handle the difficulties of learning from a batch without interactions. We also expect that our proposed algorithm will outperform Contextual BCQ thanks to more robust task inference.
 
-We measure performance by the average returns over unseen tasks, sampled from the same task distribution. We do not count the first two episodes' returns \cite{rakelly2019efficient}. We obtain the batch for each training task by training Soft Actor Critic (SAC) \cite{haarnoja2018soft} with a fixed number of environment interactions. \autoref{sec_env_baseline} provide more details on the environment setups and training procedures of the baselines.
+We measure performance by the average returns over unseen tasks, sampled from the same task distribution. We do not count the first two episodes' returns \cite{rakelly2019efficient}. We obtain the batch for each training task by training Soft Actor Critic (SAC) \cite{haarnoja2018soft} with a fixed number of environment interactions. 
+% \autoref{sec_env_baseline} provide more details on the environment setups and training procedures of the baselines.
 
 \begin{wrapfigure}{R}{0.35\textwidth}
     \vspace{-0.6em}
@@ -167,7 +168,8 @@ Fig. \ref{fig:ablation} compares our full model and the ablated versions. Our fu
 
 Comparing to the \textbf{No triplet loss} ablation, transition relabelling leads to more efficient computation of the triplet loss. Without the relabelled transitions, computing Eq. \ref{eq_reform_triplet} requires $O(K^2 N^2)$. Our loss in Eq. \ref{eq_triplet_all_task} only requires $O(K^2)$. We also need to relabel the transitions only once before training the multi-task policy. It is also trivial to parallelize across tasks.
 
-We also study reward estimation accuracy. Fig. \ref{fig:reward_error} shows that our reward model achieves low error on state-action pairs from another task, both with and without an ensemble. We also compare MBML against an ablated version that uses the ground truth reward function for relabelling on UmazeGoal-M. The model trained using the ground truth reward function only performs slightly better than the model trained using the learned reward function. We include in \autoref{sec_ablation} experiments on margin sensitivity analysis and the benefit of the reward ensemble.
+We also study reward estimation accuracy. Fig. \ref{fig:reward_error} shows that our reward model achieves low error on state-action pairs from another task, both with and without an ensemble. We also compare MBML against an ablated version that uses the ground truth reward function for relabelling on UmazeGoal-M. The model trained using the ground truth reward function only performs slightly better than the model trained using the learned reward function. 
+% We include in \autoref{sec_ablation} experiments on margin sensitivity analysis and the benefit of the reward ensemble.
 
 \subsection{Using the multi-task policy to enable faster convergence when training on unseen tasks}\label{sec_exp_init_sac}
 
@@ -177,12 +179,14 @@ initializing networks with our multi-task policy significantly speeds up converg
 The initialization process is as followed. Given a new task, we use the multi-task policy to collect 10K transitions.
 We then train a new policy to imitate the actions taken by maximizing their log likelihood. As commonly done, the new policy outputs the mean and variance of a diagonal Gaussian distribution. The new policy does not take a task identity as input. The task inference module infers a task identity {\bf z} from the 10K transitions. Fixing {\bf z} as input, the distilled value function $Q_D$ initializes the new value function. Given the new policy and the initialized value function,
 we train them with SAC by collecting more data.
-To stabilize training, we perform target policy smoothing \cite{TD3} and double-Q learning \cite{van2016deep} by training two identically initialized value functions with different mini-batches (pseudo-codes and more motivations in Appendix \ref{sec_sac_our_methods}).
+To stabilize training, we perform target policy smoothing \cite{TD3} and double-Q learning \cite{van2016deep} by training two identically initialized value functions with different mini-batches.
+% (pseudo-codes and more motivations in Appendix \ref{sec_sac_our_methods}).
 
 Fig. \ref{fig:SAC_init} compares the performance of the policies initialized with our multi-task policy to randomly initialized policies.
 Initializing the policies with the MBML policy significantly increases convergence speed in all five task distributions, demonstrating our method's robustness.
 Even in the complex HumanoidDir-M task distribution, our method significantly speeds up the convergence, requiring only 85K environment interactions, while the randomly initialized policies require 350K, representing a $76\%$ improvement in sample efficiency.
-Similar conclusions hold when comparing against randomly initialized SAC where the two value functions are trained using different mini-batches (Appendix \ref{sec_init_counterpart}).
+Similar conclusions hold when comparing against randomly initialized SAC where the two value functions are trained using different mini-batches.
+% (Appendix \ref{sec_init_counterpart}).
 We also note that our initialization method does not require extensive hyper-parameter tuning.
 
 % \fb{Your changes in the appendix lgtm. You can remove the blue color from them.}
