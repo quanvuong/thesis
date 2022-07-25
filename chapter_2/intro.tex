@@ -40,10 +40,10 @@ They assume access to the ground truth task identity and reward function of the 
 Our policy does not know the testing task's identity and must infer it through collected trajectories.
 We also do not have access to the reward function of the testing tasks.
 
-% \begin{figure}[t]
-%     \centering
-%     \includegraphics[width=0.7\textwidth]{chapter_2/fig/mismatch.png}
-%     \caption{A toy example to illustrate the challenge. The agent must navigate from the origin to a goal location. \textbf{Left:} Goal 1 and Goal 2 denote the two training tasks. The red and blue squares indicate the transitions collected from task 1 and 2 respectively. We can train the task inference module to infer the task identity to be 1 when the context set contains the red transitions and 2 when the context set contains the blue transitions. Since there are no overlap between the red and blue squares, the task inference module learns to correlate the state-action pairs to the task identity. \textbf{Right:} The failure of the task inference module. The policy must infer the task identity from the randomly collected transitions, denoted by the green squares.
-%         The agent needs to navigate to goal 1 during testing. However, if the green squares have more overlap with the blue squares, the task inference module will predict 2 to be the task identity. The agent therefore navigates to the wrong goal location.}
-%     \label{fig:cheat}
-% \end{figure}
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.7\textwidth]{chapter_2/fig/mismatch.png}
+    \caption{A toy example to illustrate the challenge. The agent must navigate from the origin to a goal location. \textbf{Left:} Goal 1 and Goal 2 denote the two training tasks. The red and blue squares indicate the transitions collected from task 1 and 2 respectively. We can train the task inference module to infer the task identity to be 1 when the context set contains the red transitions and 2 when the context set contains the blue transitions. Since there are no overlap between the red and blue squares, the task inference module learns to correlate the state-action pairs to the task identity. \textbf{Right:} The failure of the task inference module. The policy must infer the task identity from the randomly collected transitions, denoted by the green squares.
+        The agent needs to navigate to goal 1 during testing. However, if the green squares have more overlap with the blue squares, the task inference module will predict 2 to be the task identity. The agent therefore navigates to the wrong goal location.}
+    \label{fig:cheat}
+\end{figure}

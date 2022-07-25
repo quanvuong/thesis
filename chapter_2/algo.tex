@@ -32,20 +32,20 @@ Note that the gradient of $\mathcal{L}_\xi$ also updates $G_i$. The final distil
 
 \subsection{Robust task inference with triplet loss design}\label{sec_algo_triplet}
 
-% \begin{wrapfigure}{R}{0.269\textwidth}
-%     \centering
-%     \vspace{-0.5em}
-%     \begin{subfigure}{0.15\paperwidth}
-%         \includegraphics[width=\linewidth]{chapter_2/fig/HumanoidDir-M-neither-qloss.png}
-%     \end{subfigure}
+\begin{wrapfigure}{R}{0.35\textwidth}
+    \centering
+    \vspace{-0.5em}
+    \begin{subfigure}{0.27\paperwidth}
+        \includegraphics[width=\linewidth]{chapter_2/fig/HumanoidDir-M-neither-qloss.png}
+    \end{subfigure}
 
-%     \begin{subfigure}{0.15\paperwidth}
-%         \includegraphics[width=\linewidth]{chapter_2/fig/HumanoidDir-M-neither-train-returns.png}
-%     \end{subfigure}
-%     \caption{{\bf Top:} Value function
-%         distillation
-%         loss (Eq. \ref{eq_loss_qi}) during training. {\bf Bottom:} The performance of the multi-task policy trained with Eq. \ref{eq_distill_loss} versus BCQ.}\label{fig:fail-distill}
-% \end{wrapfigure}
+    \begin{subfigure}{0.27\paperwidth}
+        \includegraphics[width=\linewidth]{chapter_2/fig/HumanoidDir-M-neither-train-returns.png}
+    \end{subfigure}
+    \caption{{\bf Top:} Value function
+        distillation
+        loss (Eq. \ref{eq_loss_qi}) during training. {\bf Bottom:} The performance of the multi-task policy trained with Eq. \ref{eq_distill_loss} versus BCQ.}\label{fig:fail-distill}
+\end{wrapfigure}
 
 Given the high performance of distillation in Multi-task RL \cite{rusu2015policy, teh2017distral, ghosh2017divide,czarnecki2019distilling, ActorMimicParisotto2015}, it surprisingly performs poorly in Multi-task Batch RL, even on the training tasks. This is even more surprising because we can minimize the distillation losses (Fig. \ref{fig:fail-distill} top) and the single-task BCQ policies have high performance (Fig. \ref{fig:fail-distill} bottom). If the single-task policies perform well and we can distill them into a multi-task policy, why does the multi-task policy have poor performance? We argue the task inference module has learnt to model the posterior over task identity as conditionally dependent on only the state-action pairs in the context set
 , i.e. $P(Z|S, A)$,
@@ -74,34 +74,37 @@ a context set for task $j$ ($j \neq i$)
         - \explain{ \quad d\big(q_{\phi}\left({\bf c}_{j\rightarrow{i}}\right), q_{\phi}\left({\bf c}_{j}\right)\big) \quad}{Ensure ${\bf c}_{j\rightarrow{i}}$ and ${\bf c}_{j}$ infer \textit{different} task identities} + \quad m\bigg]_{+},
 \end{equation}
 
-\begin{figure}[!t]
+\begin{wrapfigure}{R}{0.5\textwidth}
     \begin{minipage}{0.5\textwidth}
-        \begin{algorithm}[H]
-            \caption{Distillation and triplet loss}\label{algo_mtbrl}
-            {\bf Input}: Batches $\{\mathcal{B}_{i}\}_{i=1}^K$; BCQ-trained $\{Q_i\}^K_{i=1}$, $\{G_i\}^K_{i=1}$, and $\{\xi_i\}^K_{i=1}$; randomly initialized $Q_D$, $G_D$ and $\xi_D$ jointly parameterized by $\theta$; task inference module $q_\phi$ with randomly initialized $\phi$
-            \begin{algorithmic}[1]
-                \Repeat
-                \State Sample context set ${\bf c}_i$ from $\mathcal{B}_{i}, \forall i$
-                \State Obtain relabelled transitions ${\bf c}_{j\rightarrow i}$ according to Eq. \ref{eq_relabel} for all pair of task $i, j$
-                \State Calculate $\mathcal{L}_{triplet}$ using Eq. \ref{eq_triplet_all_task}
-                \State Calculate $\mathcal{L}_Q, \mathcal{L}_G, \mathcal{L}_\xi$ using Eq. \ref{eq_loss_qi}, \ref{eq_loss_gi}, \ref{eq_loss_xi_i}
-                \State Calculate $\mathcal{L}$ using Eq. \ref{eq_loss_final}
-                \State Update $\theta, \phi$ to minimize $\mathcal{L}$
-                \Until{Done}
-            \end{algorithmic}
-        \end{algorithm}
+    \begin{algorithm}[H]
+        \caption{Distillation and triplet loss}\label{algo_mtbrl}
+        {\bf Input}: Batches $\{\mathcal{B}_{i}\}_{i=1}^K$; BCQ-trained $\{Q_i\}^K_{i=1}$, $\{G_i\}^K_{i=1}$, and $\{\xi_i\}^K_{i=1}$; randomly initialized $Q_D$, $G_D$ and $\xi_D$ jointly parameterized by $\theta$; task inference module $q_\phi$ with randomly initialized $\phi$
+        \begin{algorithmic}[1]
+            \Repeat
+            \State Sample context set ${\bf c}_i$ from $\mathcal{B}_{i}, \forall i$
+            \State Obtain relabelled transitions ${\bf c}_{j\rightarrow i}$ according to Eq. \ref{eq_relabel} for all pair of task $i, j$
+            \State Calculate $\mathcal{L}_{triplet}$ using Eq. \ref{eq_triplet_all_task}
+            \State Calculate $\mathcal{L}_Q, \mathcal{L}_G, \mathcal{L}_\xi$ using Eq. \ref{eq_loss_qi}, \ref{eq_loss_gi}, \ref{eq_loss_xi_i}
+            \State Calculate $\mathcal{L}$ using Eq. \ref{eq_loss_final}
+            \State Update $\theta, \phi$ to minimize $\mathcal{L}$
+            \Until{Done}
+        \end{algorithmic}
+    \end{algorithm}
     \end{minipage}
-    \hfill
-    \begin{minipage}{0.45\textwidth}
-        \begin{figure}[H]
-            \centering
-            \includegraphics[width=0.6\textwidth]{chapter_2/fig/action-selection.png}
-            \caption{Action selection. Given $s$, $G_D$ generates candidate actions $a_m$.
-                $\xi_D$ generates small corrections for the actions $a_m$. The policy takes the corrected action $\tilde{a}_m$ with the highest value as estimated by $Q_D$.}
-            \label{fig:action}
-        \end{figure}
-    \end{minipage}
-\end{figure}
+\end{wrapfigure}
+
+% \begin{figure}[!t]
+%     % \hfill
+%     \begin{minipage}{0.5\textwidth}
+%         \begin{figure}[H]
+%             \centering
+%             \includegraphics[width=0.5\textwidth]{chapter_2/fig/action-selection.png}
+%             \caption{Action selection. Given $s$, $G_D$ generates candidate actions $a_m$.
+%                 $\xi_D$ generates small corrections for the actions $a_m$. The policy takes the corrected action $\tilde{a}_m$ with the highest value as estimated by $Q_D$.}
+%             \label{fig:action}
+%         \end{figure}
+%     \end{minipage}
+% \end{figure}
 
 where $m$ is the triplet margin, $[\cdot]_{+}$ is the ReLU function and $d$ is a divergence measure. $q_\phi$ outputs the posterior over task identity, we thus choose $d$ to be the KL divergence.
 
