@@ -103,12 +103,23 @@
 %   http://code.google.com/p/ucsd-thesis/wiki/GettingStarted
 
 \usepackage{csquotes}
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{hyperref}       % hyperlinks
+\usepackage{relsize}
+\usepackage{wrapfig}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{calc}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{xcolor}
+\usepackage{graphicx}
 
-
+\newcommand{\explain}[2]{\underbrace{#1}_{\parbox{\widthof{\ensuremath{#1}}}{\footnotesize\raggedright #2}}}
 
 %% AMS PACKAGES - Chances are you will want some or all 
 %    of these if writing a dissertation that includes equations.
-%  \usepackage{amsmath, amscd, amssymb, amsthm}
+ \usepackage{amsmath, amscd, amssymb, amsthm}
 
 %% BONUS MATH
 %  \usepackage{mathtools} 
@@ -134,7 +145,7 @@
 \usepackage{setspace}
 \doublespace
 \usepackage[font=small, width=0.9\textwidth]{caption}
-\usepackage[capposition=bottom]{floatrow} %force captions below figure per OGS requirement
+% \usepackage[capposition=bottom]{floatrow} %force captions below figure per OGS requirement
 
 %% SUBFIG - Use this to place multiple images in a
 %    single figure.  Subfig will handle placement and
@@ -227,7 +238,9 @@
 %   \chapter{My First Chapter Name}
 % and start typing away.  
 
-\include{chapter_1/main.tex}
+\include{chapter_1/main}
+
+\include{chapter_2/main}
 
 % \section{A section}
 % Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla odio
@@ -311,6 +324,6 @@
 %                          which should be formatted as a bibtex file.
 %                          and needs to be separately compiled into a bbl file.
 \singlespace  %to force bibilography environment to use single spacing for each entry 
-              %double spacing between entries remains
+%double spacing between entries remains
 \end{document}
 

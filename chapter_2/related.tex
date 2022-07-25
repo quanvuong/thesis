@@ -1,0 +1,15 @@
+\section{Related Works}\label{sec_related_works}
+
+\textbf{Batch RL} 
+Recent advances in Batch RL \cite{agarwal2019optimistic,kumar2019stabilizing,fujimoto2019off,chen2019bail,kumar2020conservative} focus on the single-task setting, which does not require training a task inference module. Thus they are not directly applicable to the Multi-task Batch RL. \cite{siegel2020keep, cabi2020ScalingDR} also consider the multi-task setting but assume access to the ground truth task identity and reward function of the test tasks. Our problem setting also differs, where the different training batches do not have significant overlap in state-action visitation frequencies, leading to the challenge of learning a robust task inference module.
+
+\textbf{Task inference in multi-task setting}
+The challenge of task inference in a multi-task setting has been tackled under 
+various umbrellas. Meta RL \cite{rakelly2019efficient, zintgraf2020varibad,fakoor2019meta,humplik2019meta,lan2019meta,saemundsson2018meta,CAVIA} trains a task inference module to infer the task identity from a context set.
+We also follow this paradigm. However, our setting presents additional challenge to train a robust task inference module, which motivates our novel 
+triplet loss design. 
+As the choice of loss function is crucial to train an successful task inference module in our settings, we will explore the other loss functions, e.g. loss functions discussed in \cite{roth2020revisiting}, in future work.
+Other multi-task RL works \cite{espeholt2018impala, yang2020multi, yumulti,d2019sharing} focus on training a good multi-task policy, rather than the task inference module, which is an orthogonal research direction to ours.
+
+\textbf{Meta RL} Meta RL \cite{lan2019meta,LearnToReinforceLearnWang2016,duan2016rl,finn2017maml,nichol2018Reptile,houthooft2018evolvedpg} optimizes for quick adaptation. However, they require interactions with the environment during training. Even though we do not explicitly optimize for quick adaptation, we demonstrate that initializing a model-free RL algorithm with our policy significantly speeds up
+convergence on unseen tasks. \cite{fakoor2019meta} uses the data from the training tasks to speed up convergence when learning on new tasks by propensity estimation techniques. This approach is orthogonal to ours and can potentially be combined to yield even greater performance improvement.

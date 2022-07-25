@@ -1,8 +1,363 @@
-\begin{thebibliography}{TUR50}
+\newcommand{\etalchar}[1]{$^{#1}$}
+\begin{thebibliography}{YXWW20}
+
+\bibitem[ASN19]{agarwal2019optimistic}
+Rishabh Agarwal, Dale Schuurmans, and Mohammad Norouzi.
+\newblock An optimistic perspective on offline reinforcement learning.
+\newblock {\em arXiv preprint arXiv:1907.04543}, 2019.
+
+\bibitem[BDR{\etalchar{+}}20]{Bengio2020A}
+Yoshua Bengio, Tristan Deleu, Nasim Rahaman, Nan~Rosemary Ke, Sebastien
+  Lachapelle, Olexa Bilaniuk, Anirudh Goyal, and Christopher Pal.
+\newblock A meta-transfer objective for learning to disentangle causal
+  mechanisms.
+\newblock In {\em International Conference on Learning Representations}, 2020.
+
+\bibitem[CCN{\etalchar{+}}20]{cabi2020ScalingDR}
+Serkan Cabi, Sergio~G{\'o}mez Colmenarejo, Alexander Novikov, Ksenia
+  Konyushkova, Scott Reed, Rae Jeong, Konrad Zolna, Yusuf Aytar, David Budden,
+  Mel Vecer{\'i}k, Oleg Sushkov, David J.~P. Barker, Jonathan Scholz, Misha
+  Denil, Nando de~Freitas, and Ziyu Wang.
+\newblock Scaling data-driven robotics with reward sketching and batch
+  reinforcement learning.
+\newblock {\em arXiv: Robotics}, 2020.
+
+\bibitem[CPO{\etalchar{+}}19]{czarnecki2019distilling}
+Wojciech~Marian Czarnecki, Razvan Pascanu, Simon Osindero, Siddhant~M
+  Jayakumar, Grzegorz Swirszcz, and Max Jaderberg.
+\newblock Distilling policy distillation.
+\newblock {\em arXiv preprint arXiv:1902.02186}, 2019.
+
+\bibitem[CZS17]{chu2017cyclegan}
+Casey Chu, Andrey Zhmoginov, and Mark Sandler.
+\newblock Cyclegan, a master of steganography.
+\newblock {\em arXiv preprint arXiv:1712.02950}, 2017.
+
+\bibitem[CZW{\etalchar{+}}19]{chen2019bail}
+Xinyue Chen, Zijian Zhou, Zheng Wang, Che Wang, Yanqiu Wu, Qing Deng, and Keith
+  Ross.
+\newblock Bail: Best-action imitation learning for batch deep reinforcement
+  learning.
+\newblock {\em arXiv preprint arXiv:1910.12179}, 2019.
+
+\bibitem[dHJL19]{de2019causal}
+Pim de~Haan, Dinesh Jayaraman, and Sergey Levine.
+\newblock Causal confusion in imitation learning.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  11693--11704, 2019.
+
+\bibitem[DSC{\etalchar{+}}16]{duan2016rl}
+Yan Duan, John Schulman, Xi~Chen, Peter~L Bartlett, Ilya Sutskever, and Pieter
+  Abbeel.
+\newblock Rl{\textdollar}{\^{}}2{\textdollar}: Fast reinforcement learning via
+  slow reinforcement learning.
+\newblock {\em arXiv preprint arXiv:1611.02779}, 2016.
+
+\bibitem[DTB{\etalchar{+}}19]{d2019sharing}
+Carlo D'Eramo, Davide Tateo, Andrea Bonarini, Marcello Restelli, and Jan
+  Peters.
+\newblock Sharing knowledge in multi-task deep reinforcement learning.
+\newblock In {\em International Conference on Learning Representations}, 2019.
+
+\bibitem[ESM{\etalchar{+}}18a]{espeholt2018impala}
+Lasse Espeholt, Hubert Soyer, Remi Munos, Karen Simonyan, Volodymir Mnih, Tom
+  Ward, Yotam Doron, Vlad Firoiu, Tim Harley, Iain Dunning, et~al.
+\newblock Impala: Scalable distributed deep-rl with importance weighted
+  actor-learner architectures.
+\newblock {\em arXiv preprint arXiv:1802.01561}, 2018.
+
+\bibitem[ESM{\etalchar{+}}18b]{impala2018}
+Lasse Espeholt, Hubert Soyer, Remi Munos, Karen Simonyan, Volodymir Mnih, Tom
+  Ward, Yotam Doron, Vlad Firoiu, Tim Harley, Iain Dunning, et~al.
+\newblock Impala: Scalable distributed deep-rl with importance weighted
+  actor-learner architectures.
+\newblock In {\em Proceedings of the International Conference on Machine
+  Learning (ICML)}, 2018.
+
+\bibitem[FAL17]{finn2017maml}
+Chelsea Finn, Pieter Abbeel, and Sergey Levine.
+\newblock Model-agnostic meta-learning for fast adaptation of deep networks.
+\newblock {\em CoRR}, abs/1703.03400, 2017.
+
+\bibitem[FCSS19]{fakoor2019meta}
+Rasool Fakoor, Pratik Chaudhari, Stefano Soatto, and Alexander~J Smola.
+\newblock Meta-q-learning.
+\newblock {\em arXiv preprint arXiv:1910.00125}, 2019.
+
+\bibitem[FKN{\etalchar{+}}20]{fu2020d4rl}
+Justin Fu, Aviral Kumar, Ofir Nachum, George Tucker, and Sergey Levine.
+\newblock D4rl: Datasets for deep data-driven reinforcement learning.
+\newblock {\em arXiv preprint arXiv:2004.07219}, 2020.
+
+\bibitem[FMP19]{fujimoto2019off}
+Scott Fujimoto, David Meger, and Doina Precup.
+\newblock Off-policy deep reinforcement learning without exploration.
+\newblock In {\em International Conference on Machine Learning}, pages
+  2052--2062, 2019.
+
+\bibitem[FvHM18]{TD3}
+Scott Fujimoto, Herke van Hoof, and David Meger.
+\newblock Addressing function approximation error in actor-critic methods.
+\newblock {\em CoRR}, abs/1802.09477, 2018.
+
+\bibitem[GSR{\etalchar{+}}17]{ghosh2017divide}
+Dibya Ghosh, Avi Singh, Aravind Rajeswaran, Vikash Kumar, and Sergey Levine.
+\newblock Divide-and-conquer reinforcement learning.
+\newblock {\em arXiv preprint arXiv:1711.09874}, 2017.
+
+\bibitem[HBL17]{hermans2017defense}
+Alexander Hermans, Lucas Beyer, and Bastian Leibe.
+\newblock In defense of the triplet loss for person re-identification.
+\newblock {\em arXiv preprint arXiv:1703.07737}, 2017.
+
+\bibitem[HCI{\etalchar{+}}18]{houthooft2018evolvedpg}
+Rein Houthooft, Richard~Y. Chen, Phillip Isola, Bradly~C. Stadie, Filip Wolski,
+  Jonathan Ho, and Pieter Abbeel.
+\newblock Evolved policy gradients.
+\newblock {\em CoRR}, abs/1802.04821, 2018.
+
+\bibitem[HGH{\etalchar{+}}19]{humplik2019meta}
+Jan Humplik, Alexandre Galashov, Leonard Hasenclever, Pedro~A Ortega, Yee~Whye
+  Teh, and Nicolas Heess.
+\newblock Meta reinforcement learning as task inference.
+\newblock {\em arXiv preprint arXiv:1905.06424}, 2019.
+
+\bibitem[HSE{\etalchar{+}}19]{hessel2019multi}
+Matteo Hessel, Hubert Soyer, Lasse Espeholt, Wojciech Czarnecki, Simon Schmitt,
+  and Hado van Hasselt.
+\newblock Multi-task deep reinforcement learning with popart.
+\newblock In {\em Proceedings of the AAAI Conference on Artificial
+  Intelligence}, volume~33, pages 3796--3803, 2019.
+
+\bibitem[HZAL18a]{SAC}
+Tuomas Haarnoja, Aurick Zhou, Pieter Abbeel, and Sergey Levine.
+\newblock Soft actor-critic: Off-policy maximum entropy deep reinforcement
+  learning with a stochastic actor.
+\newblock {\em CoRR}, abs/1801.01290, 2018.
+
+\bibitem[HZAL18b]{haarnoja2018soft}
+Tuomas Haarnoja, Aurick Zhou, Pieter Abbeel, and Sergey Levine.
+\newblock Soft actor-critic: Off-policy maximum entropy deep reinforcement
+  learning with a stochastic actor.
+\newblock {\em arXiv preprint arXiv:1801.01290}, 2018.
+
+\bibitem[KFS{\etalchar{+}}19]{kumar2019stabilizing}
+Aviral Kumar, Justin Fu, Matthew Soh, George Tucker, and Sergey Levine.
+\newblock Stabilizing off-policy q-learning via bootstrapping error reduction.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  11761--11771, 2019.
+
+\bibitem[KvSS19]{metagenrl}
+Louis Kirsch, Sjoerd van Steenkiste, and J{\"u}rgen Schmidhuber.
+\newblock Improving generalization in meta reinforcement learning using learned
+  objectives.
+\newblock {\em arXiv preprint arXiv:1910.04098}, 2019.
+
+\bibitem[KW13]{kingma2013auto}
+Diederik~P Kingma and Max Welling.
+\newblock Auto-encoding variational bayes.
+\newblock {\em arXiv preprint arXiv:1312.6114}, 2013.
+
+\bibitem[KZTL20]{kumar2020conservative}
+Aviral Kumar, Aurick Zhou, George Tucker, and Sergey Levine.
+\newblock Conservative q-learning for offline reinforcement learning.
+\newblock {\em arXiv preprint arXiv:2006.04779}, 2020.
+
+\bibitem[LHP{\etalchar{+}}15]{ddpg}
+Timothy~P Lillicrap, Jonathan~J Hunt, Alexander Pritzel, Nicolas Heess, Tom
+  Erez, Yuval Tassa, David Silver, and Daan Wierstra.
+\newblock Continuous control with deep reinforcement learning.
+\newblock {\em arXiv preprint arXiv:1509.02971}, 2015.
+
+\bibitem[LLGW19]{lan2019meta}
+Lin Lan, Zhenguo Li, Xiaohong Guan, and Pinghui Wang.
+\newblock Meta reinforcement learning with task embedding and shared policy.
+\newblock {\em arXiv preprint arXiv:1905.06527}, 2019.
+
+\bibitem[MFB20]{mobahi2020selfdistillation}
+Hossein Mobahi, Mehrdad Farajtabar, and Peter~L. Bartlett.
+\newblock Self-distillation amplifies regularization in hilbert space, 2020.
+
+\bibitem[NAS18]{nichol2018Reptile}
+Alex Nichol, Joshua Achiam, and John Schulman.
+\newblock On first-order meta-learning algorithms.
+\newblock {\em CoRR}, abs/1803.02999, 2018.
+
+\bibitem[P{\etalchar{+}}09]{pearl2009causal}
+Judea Pearl et~al.
+\newblock Causal inference in statistics: An overview.
+\newblock {\em Statistics surveys}, 3:96--146, 2009.
+
+\bibitem[PBS15]{ActorMimicParisotto2015}
+Emilio Parisotto, Jimmy Ba, and Ruslan Salakhutdinov.
+\newblock Actor-mimic: Deep multitask and transfer reinforcement learning.
+\newblock {\em CoRR}, abs/1511.06342, 2015.
+
+\bibitem[PCZ{\etalchar{+}}19]{peng2019MCP}
+Xue~Bin Peng, Michael Chang, Grace Zhang, Pieter Abbeel, and Sergey Levine.
+\newblock {MCP:} learning composable hierarchical control with multiplicative
+  compositional policies.
+\newblock {\em CoRR}, abs/1905.09808, 2019.
+
+\bibitem[Pea09]{pearl_2009}
+Judea Pearl.
+\newblock {\em Causality}.
+\newblock Cambridge University Press, 2009.
+
+\bibitem[Pea10]{pearl2010introduction}
+Judea Pearl.
+\newblock An introduction to causal inference.
+\newblock {\em The international journal of biostatistics}, 6(2), 2010.
+
+\bibitem[PJS17]{Peters2017}
+J.~Peters, D.~Janzing, and B.~Sch\"olkopf.
+\newblock {\em Elements of Causal Inference: Foundations and Learning
+  Algorithms}.
+\newblock MIT Press, Cambridge, MA, USA, 2017.
+
+\bibitem[RCG{\etalchar{+}}15]{rusu2015policy}
+Andrei~A Rusu, Sergio~Gomez Colmenarejo, Caglar Gulcehre, Guillaume Desjardins,
+  James Kirkpatrick, Razvan Pascanu, Volodymyr Mnih, Koray Kavukcuoglu, and
+  Raia Hadsell.
+\newblock Policy distillation.
+\newblock {\em arXiv preprint arXiv:1511.06295}, 2015.
+
+\bibitem[RMS{\etalchar{+}}20]{roth2020revisiting}
+Karsten Roth, Timo Milbich, Samarth Sinha, Prateek Gupta, Bjoern Ommer, and
+  Joseph~Paul Cohen.
+\newblock Revisiting training strategies and generalization performance in deep
+  metric learning.
+\newblock {\em arXiv preprint arXiv:2002.08473}, 2020.
+
+\bibitem[RZQ{\etalchar{+}}19]{rakelly2019efficient}
+Kate Rakelly, Aurick Zhou, Deirdre Quillen, Chelsea Finn, and Sergey Levine.
+\newblock Efficient off-policy meta-reinforcement learning via probabilistic
+  context variables.
+\newblock {\em arXiv preprint arXiv:1903.08254}, 2019.
+
+\bibitem[SAL{\etalchar{+}}20]{sharma2020emergent}
+Archit Sharma, Michael Ahn, Sergey Levine, Vikash Kumar, Karol Hausman, and
+  Shixiang Gu.
+\newblock Emergent real-world robotic skills via unsupervised off-policy
+  reinforcement learning, 2020.
+
+\bibitem[SGT{\etalchar{+}}08]{scarselli2008graph}
+Franco Scarselli, Marco Gori, Ah~Chung Tsoi, Markus Hagenbuchner, and Gabriele
+  Monfardini.
+\newblock The graph neural network model.
+\newblock {\em IEEE Transactions on Neural Networks}, 20(1):61--80, 2008.
+
+\bibitem[SHD18]{saemundsson2018meta}
+Steind{\'o}r S{\ae}mundsson, Katja Hofmann, and Marc~Peter Deisenroth.
+\newblock Meta reinforcement learning with latent variable gaussian processes.
+\newblock {\em arXiv preprint arXiv:1803.07551}, 2018.
+
+\bibitem[SLM{\etalchar{+}}15]{TRPO}
+John Schulman, Sergey Levine, Philipp Moritz, Michael~I. Jordan, and Pieter
+  Abbeel.
+\newblock Trust region policy optimization.
+\newblock {\em CoRR}, abs/1502.05477, 2015.
+
+\bibitem[SSB{\etalchar{+}}20]{siegel2020keep}
+Noah~Y Siegel, Jost~Tobias Springenberg, Felix Berkenkamp, Abbas Abdolmaleki,
+  Michael Neunert, Thomas Lampe, Roland Hafner, and Martin Riedmiller.
+\newblock Keep doing what worked: Behavioral modelling priors for offline
+  reinforcement learning.
+\newblock {\em arXiv preprint arXiv:2002.08396}, 2020.
+
+\bibitem[SWD{\etalchar{+}}17]{PPO}
+John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov.
+\newblock Proximal policy optimization algorithms.
+\newblock {\em CoRR}, abs/1707.06347, 2017.
+
+\bibitem[TBC{\etalchar{+}}17]{teh2017distral}
+Yee Teh, Victor Bapst, Wojciech~M Czarnecki, John Quan, James Kirkpatrick, Raia
+  Hadsell, Nicolas Heess, and Razvan Pascanu.
+\newblock Distral: Robust multitask reinforcement learning.
+\newblock In {\em Advances in Neural Information Processing Systems}, pages
+  4496--4506, 2017.
+
+\bibitem[TET12]{todorov2012mujoco}
+Emanuel Todorov, Tom Erez, and Yuval Tassa.
+\newblock Mujoco: A physics engine for model-based control.
+\newblock In {\em 2012 IEEE/RSJ International Conference on Intelligent Robots
+  and Systems}, pages 5026--5033. IEEE, 2012.
 
 \bibitem[TUR50]{10.1093/mind/LIX.236.433}
 A.~M. TURING.
 \newblock {I.—COMPUTING MACHINERY AND INTELLIGENCE}.
 \newblock {\em Mind}, LIX(236):433--460, 10 1950.
+
+\bibitem[VHGS16]{van2016deep}
+Hado Van~Hasselt, Arthur Guez, and David Silver.
+\newblock Deep reinforcement learning with double q-learning.
+\newblock In {\em Thirtieth AAAI conference on artificial intelligence}, 2016.
+
+\bibitem[VZR18]{SPU}
+Quan~Ho Vuong, Yiming Zhang, and Keith~W. Ross.
+\newblock Supervised policy update.
+\newblock {\em CoRR}, abs/1805.11706, 2018.
+
+\bibitem[WKT{\etalchar{+}}16]{LearnToReinforceLearnWang2016}
+Jane~X. Wang, Zeb Kurth{-}Nelson, Dhruva Tirumala, Hubert Soyer, Joel~Z. Leibo,
+  R{\'{e}}mi Munos, Charles Blundell, Dharshan Kumaran, and Matthew Botvinick.
+\newblock Learning to reinforcement learn.
+\newblock {\em CoRR}, abs/1611.05763, 2016.
+
+\bibitem[WPC{\etalchar{+}}20]{wu2020comprehensive}
+Zonghan Wu, Shirui Pan, Fengwen Chen, Guodong Long, Chengqi Zhang, and S~Yu
+  Philip.
+\newblock A comprehensive survey on graph neural networks.
+\newblock {\em IEEE Transactions on Neural Networks and Learning Systems},
+  2020.
+
+\bibitem[WWVR20]{SOP}
+Che Wang, Yanqiu Wu, Quan Vuong, and Keith Ross.
+\newblock Striving for simplicity and performance in off-policy drl: Output
+  normalization and non-uniform sampling, 2020.
+
+\bibitem[XLHL19]{xie2019selftraining}
+Qizhe Xie, Minh-Thang Luong, Eduard Hovy, and Quoc~V. Le.
+\newblock Self-training with noisy student improves imagenet classification,
+  2019.
+
+\bibitem[XLZ{\etalchar{+}}19]{xu2019can}
+Keyulu Xu, Jingling Li, Mozhi Zhang, Simon~S Du, Ken-ichi Kawarabayashi, and
+  Stefanie Jegelka.
+\newblock What can neural networks reason about?
+\newblock {\em arXiv preprint arXiv:1905.13211}, 2019.
+
+\bibitem[YKG{\etalchar{+}}]{yumulti}
+Tianhe Yu, Saurabh Kumar, Abhishek Gupta, Sergey Levine, Karol Hausman, and
+  Chelsea Finn.
+\newblock Multi-task reinforcement learning without interference.
+
+\bibitem[YXWW20]{yang2020multi}
+Ruihan Yang, Huazhe Xu, Yi~Wu, and Xiaolong Wang.
+\newblock Multi-task reinforcement learning with soft modularization.
+\newblock {\em arXiv preprint arXiv:2003.13661}, 2020.
+
+\bibitem[ZCZ{\etalchar{+}}18]{zhou2018graph}
+Jie Zhou, Ganqu Cui, Zhengyan Zhang, Cheng Yang, Zhiyuan Liu, Lifeng Wang,
+  Changcheng Li, and Maosong Sun.
+\newblock Graph neural networks: A review of methods and applications.
+\newblock {\em arXiv preprint arXiv:1812.08434}, 2018.
+
+\bibitem[ZSI{\etalchar{+}}20]{zintgraf2020varibad}
+Luisa Zintgraf, Kyriacos Shiarlis, Maximilian Igl, Sebastian Schulze, Yarin
+  Gal, Katja Hofmann, and Shimon Whiteson.
+\newblock Varibad: A very good method for bayes-adaptive deep rl via
+  meta-learning.
+\newblock In {\em International Conference on Learning Representation (ICLR)},
+  2020.
+
+\bibitem[ZSK{\etalchar{+}}19]{CAVIA}
+Luisa Zintgraf, Kyriacos Shiarli, Vitaly Kurin, Katja Hofmann, and Shimon
+  Whiteson.
+\newblock Fast context adaptation via meta-learning.
+\newblock In Kamalika Chaudhuri and Ruslan Salakhutdinov, editors, {\em
+  Proceedings of the 36th International Conference on Machine Learning},
+  volume~97 of {\em Proceedings of Machine Learning Research}, pages
+  7693--7702, Long Beach, California, USA, 09--15 Jun 2019. PMLR.
 
 \end{thebibliography}
