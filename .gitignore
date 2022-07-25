@@ -9,3 +9,4 @@
 *.blg
 template.fdb_latexmk
 template.fls
+template.bbl
