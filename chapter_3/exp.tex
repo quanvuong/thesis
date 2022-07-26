@@ -1,0 +1,202 @@
+\section{Experiments}
+\label{sec:dasco_exp}
+
+% \renewcommand{\arraystretch}{1.2}
+
+% Our experiments aim at answering the following questions: 1. When learning from offline datasets that require combining actions from sub-optimal trajectories, does \name{} outperform existing methods that are based on distribution constraints? 2. On standard benchmarks such as D4RL~\cite{d4rl}, how does \name{} compare against recent methods? 3. Are both the dual generator and the probability ratio weight important for the performance of \name{}?
+
+Our experiments aim at answering the following questions: 
+\begin{enumerate}
+    \item When learning from offline datasets that require combining actions from sub-optimal trajectories, does \name{} outperform existing methods that are based on distribution constraints? 
+    \item On standard benchmarks such as D4RL~\cite{d4rl}, how does \name{} compare against recent methods? 
+    \item Are both the dual generator and the probability ratio weight important for the performance of \name{}?
+\end{enumerate}
+
+\subsection{Comparisons on standard benchmarks and new datasets}
+%%SL.5.18: Maybe we can start with a short discussion (a sentence or two) for why we need to add the new tasks? I also wonder if the subsection title might be perceived as a little misleading, since it says comparisons on d4rl tasks, but then the discussion talks about creating new tasks that are not the d4rl tasks...
+
+For our first set of experiments, we introduce four new datasets to simulate the challenges one might encounter when using offline RL algorithms on real world data. These datasets introduce additional learning challenges and require the algorithm to combine actions in different trajectories to obtain good performance. We use the existing AntMaze environments from the D4RL suite~\cite{d4rl}: antmaze-medium and antmaze-large. In these two environments, the algorithm controls an 8-DoF ``Ant" quadruped robot to navigate a 2D maze to reach desired goal locations. 
+The D4RL benchmark generates the offline datasets for these two environments using two policies: 1. a low-level goal reaching policy that outputs torque commands to move the Ant to a nearby goal location and 2. a high-level waypoint generator to provide sub-goals that guide the low-level goal-reaching policy to the desired location.
+We use the same two policies to generate two new classes of datasets. 
+
+For the \texttt{noisy}
+dataset, we add Gaussian noise to the action computed by the low-level goal-reaching policy. The noise variance depends on the 2D location of the Ant in the maze -- larger in some 2D regions than others. We intend this dataset to be representative of situations where the data generation policies are more deterministic in some states than others~\cite{kumar2022prefer} -- a robot picking up an object has many good options to approach the object, but when the robot grasps the object, its behavior should be more deterministic to ensure successful grasp without damaging or dropping the object \cite{10.5555/561828}.
+% a robot navigating a room have many degree of freedom of movements, but once it crosses through a door, there is a much smaller set of actions that allow it to successfully navigate through the constrained free space. 
+%%SL.5.18: I'm having some difficulty following the intuition in this last sentence.
+
+For a \texttt{biased} dataset, in addition to adding Gaussian noise to the actions as it is done in the \texttt{noisy} dataset, we also add  bias to the actions computed by the low-level policy. The values of the bias also depend on the current 2D location of the Ant in the maze. This setting is meant to simulate learning from relabelled data, where the dataset was generated when the data generation policies were performing a different task than the tasks we are using the dataset to learn to perform. Relabelling offline data is a popular method for improving the performance of offline RL algorithms \cite{MBRL, Snell2022}, especially when we have much more data for some tasks than others \cite{mtopt}.
+In the AntMaze environment, offline RL algorithms must combine data from sub-optimal trajectories to learn behaviors with high returns. In addition, \texttt{noisy} and \texttt{biased} datasets present a more challenging learning scenarios due to the added noise and systematic bias which vary non-uniformly based on the 2D location of the Ant.
+
+\autoref{tab:hetero_antmaze} illustrates the performance comparison of our method and representative methods that enforce distribution constraints, either through optimizing a conservative lower bound of the value estimates (CQL) or only optimizing the policy on actions in the dataset using Advantage Weighted Regression \cite{peng2019awr} (IQL). Our method outperforms both CQL and IQL. In these tasks, to ensure a fair comparison between  different methods, we perform oracle offline policy selection to obtain the performance estimates for CQL, IQL, and our method. We also compare the performance on standard AntMaze tasks when learning from the datasets in the D4RL benchmark without modifications in \autoref{tab:d4rl_antmaze}. In these tasks, our method outperforms IQL by a large margin on two diverse datasets.
+\begin{table}[!htp]\centering
+\caption{Performance comparison to distribution-constrained baselines when learning from the \texttt{noisy} and \texttt{biased} datasets. Our method outperforms the baselines by a large margin.}\label{tab:hetero_antmaze}
+%%SL.5.18: Here and elsewhere, I would suggest trying to make the caption a bit more informative. A good idea for the caption is to have one sentence describing what the figure shows, and then another sentence or two explaining what the reader should look for in the figure. For space constraints, you can probably find a way to put Table 1 and Table 2 side-by-side; it may also be good to bold the best result in the tables (though if they are close, consider if we can somehow get error bars and only bold differences that are statistically significant)
+\small
+\begin{tabular}{l||rr|r}
+Dataset & CQL & IQL & \name{} (Ours) \\ \hline
+
+% name in code is antmaze-large-recollect-actually-v2 &  & 41.0 (7.9) & \textbf{} \\
+antmaze-large-bias & 50.0 & 41.0 & \textbf{ 63.9 } \\
+
+% name in code is antmaze-large-recollect-v2  &  & 39.0 (6.4) & \textbf{} \\
+antmaze-large-noisy  & 41.7 & 39.0 & \textbf{ 54.3 } \\
+
+% antmaze-medium-recollect-actually-v2  & & 48.0 (5.9) & \textbf{} \\
+antmaze-medium-bias  & 72.7 & 48.0 & \textbf{ 90.2 } \\
+
+% antmaze-medium-recollect-v2  & & 44.3 (1.7) & \textbf{} \\ \hline
+antmaze-medium-noisy  & 55.0 & 44.3 & \textbf{ 86.3 } \\ \hline
+
+\texttt{noisy} and \texttt{biased} antmaze-v2 total & 219.4 & 172.3 &  \textbf{294.7} \\ \hline
+\end{tabular}
+\end{table}
+% IQL and Ours taken from https://docs.google.com/spreadsheets/d/1rAZkYLL2SkzskYdbF-oVQ2GjQ1RMifJb0Sr_DLITi6g/edit#gid=920938660
+% CQL from https://wandb.ai/aviralkumar/Antmaze-runs-with-full-orthogonal-init-randomized-DR3-runs--UpdateD4RL-AndDR3-antmaze?workspace=user-aviralkumar
+\begin{table}[!htp]\centering
+\caption{Performance comparison to distribution-constrained baselines on AntMaze tasks in D4RL. Our algorithm outperforms the baselines when learning from two diverse datasets.}\label{tab:d4rl_antmaze}
+\small
+\begin{tabular}{l||rr|r}
+Dataset  &CQL & IQL & \name{} (Ours) \\\hline
+antmaze-umaze & 95.0 & 93.0 & 98.2  \\
+antmaze-umaze-diverse  & 61.0 & 64.0 & \textbf{97.1} \\
+antmaze-medium-play & 73.0 & 82.0 & 87.8 \\
+antmaze-medium-diverse & 73.2 & 81.0 & 84.6 \\
+antmaze-large-play & 44.0 & 53.0 & 56.0 \\
+antmaze-large-diverse & 46.0 & 53.0 & \textbf{74.1} \\ \hline
+antmaze total & 392.2 & 426.0 & 497.8 \\ 
+\hline 
+\end{tabular}
+\end{table}
+\begin{table}[!htp]\centering
+\caption{Performance comparison with recent offline RL algorithms on the Gym locomotion tasks}\label{tab:d4rl_locomotion}
+\scriptsize
+\setlength{\tabcolsep}{0.7em}
+\begin{tabular}{l||rrrrrrrr|r}
+Dataset &BC &10\%BC &DT &AWAC &Onestep RL &TD3+BC &CQL & IQL & \name{} (Ours) \\\hline
+halfcheetah-medium-replay & 36.6 &40.6 &36.6 &40.5 &38.1 & 44.6 & 45.5 & 44.2 & 44.7  \\
+hopper-medium-replay & 18.1 &75.9 &82.7 &37.2 & 97.5 &60.9 & 95.0 & 94.7 & 101.7  \\
+walker2d-medium-replay & 26.0 &62.5 &66.6 &27.0 &49.5 & 81.8 &77.2 & 73.9 & 74.5 \\
+halfcheetah-medium-expert & 55.2 & 92.9 &86.8 &42.8 & 93.4 & 90.7 & 91.6 & 86.7 & 94.3  \\
+hopper-medium-expert & 52.5 & 110.9 & 107.6 &55.8 &103.3 &98.0 & 105.4 &91.5 & 111.4 \\
+walker2d-medium-expert & 107.5 & 109.0 & 108.1 & 74.5 & 113.0 & 110.1 & 108.8 & 109.6 & 109.3  \\ \hline
+locomotion total & 295.9 & 491.8 & 488.4 & 277.8 & 494.8 & 486.1 & 523.5 & 500.6 & 535.9 \\
+\hline
+\end{tabular}
+\end{table}
+
+
+By comparing the results in \autoref{tab:hetero_antmaze} (learning from \texttt{noisy} and \texttt{biased} datasets) and \autoref{tab:d4rl_antmaze} (learning from existing offline datasets in D4RL), we also note that our proposed algorithm outperforms distribution-constraint offline RL algorithms (CQL, IQL) more consistently when tested on the \texttt{noisy} and \texttt{biased} datasets. For the results in these two tables, the definition of the antmaze-medium and antmaze-large environments are the same. The only axis of variation in the learning setup is the noise and systematic bias added to the actions of the dataset generation policies. We therefore conclude that our algorithm is more robust to the noise and systematic bias added to the actions than distribution-constrained offline RL algorithms.
+
+% Our methods outperform baselines by a larger margin when the algorithms learn from the 
+% Since the environment definition is the same across the antmaze-large and antmaze-medium tasks in \autoref{tab:hetero_antmaze} and \autoref{tab:d4rl_antmaze},
+%%SL.5.18: I don't quite understand the significance of "environment definition is the same" here...
+
+Next, we evaluate our approach on Gym locomotion tasks from the standard D4RL suite. The performance results on these tasks are illustrated in \autoref{tab:d4rl_locomotion}. Our method is competitive with BC, one-step offline RL methods \cite{brandfonbrener2021offline}, and multi-step distribution-constraint RL  methods \cite{kostrikov2021offline, kumar2020conservative}. This is not surprising because in these tasks, the offline dataset contains a large number of trajectories with high returns.
+%%SL.5.18: you mean 10% BC? regular BC performs horribly...
+%We present the result on the Adroit dexterous manipulation tasks in the Appendix.
+
+In terms of total amount of compute and type of resources used, we use an internal cluster that allows for access up to 64 preemptive Nvidia RTX 2080 Ti GPUs. For each experiment of learning from an offline dataset, we use half a GPU and 3 CPU cores. Each experiment generally takes half a day to finish. We implemented our algorithms in Pytorch~\cite{paszke2019pytorch} and obtained results for baselines from the publicly available implementations released by the original authors. 
+% Regarding hyper-parameter tuning, we tune the hyper-parameters for the GAN, including instance noise 
+
+% On the Adroit dexterous manipulation tasks, previous offline RL methods have only been shown to be competitive with BC. This is because the offline datasets contain mostly demonstrations. Our method is no different and we therefore include the results on the Adroit tasks in the Appendix.
+%%SL.5.18: I think we can just keep these last two sentences short and say that we present the others in the appendix, it would be a good idea not to distract the reader with extraneous information, and instead add a few concluding sentences after this about what the main takeaways from the experiments should be
+
+% 36.6 + 18.1 + 26.0 + 55.2 + 52.5 + 107.5 = 295.9
+% 40.6 + 75.9 + 62.5 + 92.9 + 110.9 + 109.0 = 491.8
+% 36.6 + 82.7 + 66.6 + 86.8 + 107.6 + 108.1 = 488.4
+% 40.5 + 37.2 + 27.0 + 42.8 + 55.8 + 74.5 = 277.8
+% 38.1 + 97.5 + 49.5 + 93.4 + 103.3 + 113.0 = 494.8
+% 44.6 + 60.9 + 81.8 + 90.7 + 98.0 + 110.1 = 486.1
+% 45.5 + 95.0 + 77.2 + 91.6 + 105.4 + 108.8 = 523.5
+% 44.2 + 94.7 + 73.9 + 86.7 + 91.5 + 109.6 = 500.6
+% 44.7 + 101.7 + 74.5 + 94.3 + 111.4 + 109.3 = 535.9
+
+
+
+% \subsection{Fine-tuning experiments}
+
+\subsection{Ablations}
+
+%%SL.5.18: if you end up short on space, this paragraph is a great candidate for shortening
+We conduct three different sets of experiments to gain more insights into our algorithm. The first experiment measures the importance of having an auxiliary generator. We recall that there are two benefits to having the auxiliary generator. Firstly, without the auxiliary generator, the generator does not in general match the data distribution (\autoref{thm_disjoint}). As such, the discriminator has an unfair advantage in learning how to distinguish between real and generated examples. Secondly, the auxiliary generator plays the role of a support player and learns to output actions that are assigned non-zero probability by the data distribution, but have low Q values. The support player allows the policy to concentrate on in-support maximization of the Q-function (\autoref{thm_joint_in_support_max}). \autoref{tab:abs_aux_gen} demonstrates that having an auxiliary generator clearly leads to a performance improvement across different task families, from Gym locomotion tasks to AntMaze tasks and even dexterous manipulation tasks.
+
+The second experiment compares the performance of the policy and the auxiliary generator on a subset of the Gym locomotion and AntMaze tasks (\autoref{tab:policy_vs_aux}). The difference in the performance of the policy and auxiliary generator illustrates their specialization of responsibility: the policy learns to output actions that lead to good performance, while the auxiliary generator learns to model the ``remainder" of the data distribution. If this ``remainder" also contains good action, then the auxiliary generator will have non-trivial performance. Otherwise, the auxiliary generator will have poor performance. 
+
+In the Gym locomotion tasks, the auxiliary generator has non-trivial performance, but it is still worse than the policy. This demonstrates that: 1. By optimizing the policy to maximize the long-term return and the discriminator function, the policy can outperform the auxiliary generator, which only maximizes the discriminator function, 2. The dataset contains a large fraction of medium performance level actions contained in continuous trajectories, which the auxiliary generator has learnt to output. In contrast, in the \texttt{bias} and \texttt{noisy} AntMaze tasks, the auxiliary generator fails to obtain non-zero performance while the policy has strong performance. This reflects the necessity of carefully picking a subset of the in-support actions to obtain good performance.
+%%SL.5.18: My sense is that these experiments are kind of in the opposite order. The important question is whether the auxiliary generator helps, so it makes sense to put that first. Then you could discuss *why* it's interesting to try to use the auxiliary generator as a policy, and then show those results. In general, remember also to motivate why each experiment is being conducted and then discuss the implications/takeaways from that experiment.
+
+
+% /quan-fast-vol/google/ongoing_exp/April_26/gaussian
+% /home/tele_mani_u20/code_proj/google/gan_for_state_matching/ongoing_exp/april5/brute_force_search_no_date_in_logdir
+\begin{table}[!htp]\centering
+\caption{Ablation for training without and with auxiliary generator. The dual generator technique, which trains the auxiliary generator in addition to the policy, is crucial to obtain good performance.}\label{tab:abs_aux_gen}
+\small
+\begin{tabular}{l||rr}
+Dataset & Without & With \\ \hline
+
+halfcheetah-medium-expert & 77.7 &  94.3\\
+hopper-medium-expert & 99 & 111.4 \\ 
+
+% name in code is antmaze-large-recollect-actually-v2 &  & 41.0 (7.9) & \textbf{} \\
+antmaze-large-bias & 54.0 & 63.9 \\
+
+% name in code is antmaze-large-recollect-v2  &  & 39.0 (6.4) & \textbf{} \\
+antmaze-large-noisy & 39.0 & 54.3 \\
+
+
+relocate-human-longhorizon & 10.1 & 40.7 \\ 
+
+\hline
+\end{tabular}
+\end{table}
+
+
+% /quan-fast-vol/google/ongoing_exp/May_08/antmaze_new_dist_after_data_collect_bug_fix/logs/aggregate_perf/2022-05-17 21:51:36.371325/antmaze_newrelabel/debug.log
+\begin{table}[!htp]\centering
+\caption{Policy vs Auxiliary Generator. The auxiliary generator has reasonable performance on the easier locomotion tasks and is significantly worse than the policy on the harder AntMaze tasks.}\label{tab:policy_vs_aux}
+\small
+\begin{tabular}{l||rr}
+Dataset & Auxiliary Generator & Policy \\ \hline
+
+halfcheetah-medium-expert & 44.167 & 94.3 \\
+hopper-medium-expert & 75.357 & 111.4 \\
+% walker2d-medium-expert-v2 & 96.562 & 109.3 \\
+
+% name in code is antmaze-large-recollect-actually-v2 &  & 41.0 (7.9) & \textbf{} \\
+antmaze-large-bias & 0.0 & 63.9 \\
+
+% name in code is antmaze-large-recollect-v2  &  & 39.0 (6.4) & \textbf{} \\
+antmaze-large-noisy  & 0.0  & 54.3 \\
+
+% % antmaze-medium-recollect-actually-v2  & & 48.0 (5.9) & \textbf{} \\
+% antmaze-medium-bias-v2  & 0.15 &  & \textbf{} \\
+
+% % antmaze-medium-recollect-v2  & & 44.3 (1.7) & \textbf{} \\ \hlineov
+% antmaze-medium-noisy-v2  & 0.15 &  & \textbf{} \\ \hline
+\end{tabular}
+\end{table}
+
+
+The third set of experiments illustrates the importance of weighing the value function in the policy objective by the probability computed by the discriminator, as described in Eq.~\ref{eq:dasco_pi}. Doing so provides a second layer of protection against exploitation of  errors in the value function by the policy. \autoref{tab:abl_dynamic_weighting} illustrates that this is very important for the AntMaze tasks, which require combining optimal and sub-optimal trajectories to obtain good performance. Perhaps this is because learning from such trajectories necessitates many rounds of offline policy evaluation and improvement steps, with each round creating an opportunity for the policy to exploit the errors in the value estimates. 
+On the other hand, the dynamic weight is less important in the Gym locomotion tasks, presumably because a significant fraction of the corresponding offline datasets has high returns and therefore incorporating sub-optimal data is less criticial to obtain high performance.
+
+% /quan-fast-vol/google/ongoing_exp/May_08/antmaze_new_dist_after_data_collect_bug_fix/logs/aggregate_perf/2022-05-17 21:51:36.371325/antmaze_newrelabel/debug.log
+\begin{table}[!htp]\centering
+\caption{Ablation for dynamic weighting of value function estimates in the policy objective. When learning from datasets that require combining actions across trajectories, such as the AntMaze tasks, using the dynamic weighting is vital to obtaining good performance.}\label{tab:abl_dynamic_weighting}
+\small
+\begin{tabular}{l||rr}
+Dataset & Without & With \\ \hline
+
+halfcheetah-medium-expert & 89.7  & 94.3  \\
+hopper-medium-expert & 110.8  & 111.4 \\
+% walker2d-medium-expert-v2 & 111.6  &  \\
+
+% antmaze-medium-play-v2 & 5.0 & \\
+% antmaze-medium-diverse-v2 & 5.0 & \\
+antmaze-large-play & 0.0 & 56.0 \\ 
+antmaze-large-diverse & 0.0 & 74.1 \\ 
+
+\hline
+\end{tabular}
+\end{table}
+

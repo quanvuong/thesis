@@ -1,0 +1,269 @@
+\section{Proofs for theorems in Section~\ref{sec:dual_gen}}
+
+\subsection{Proof for Theorem~\ref{thm_disjoint} }
+
+In the following proof, we use $p_{\text{data}}$ to refer to the real data distribution, instead of $p_\mathcal{D}$ as in Section~\ref{sec:dual_gen}, to avoid confusion with the discriminator distribution.
+
+We recall Theorem~\ref{thm_disjoint}:
+
+\thmdisjoint*
+
+The optimization problem in Eq.~\ref{eq:joint_nodual} is:
+\begin{align*}
+    \min_{G} \max_{D}  V(G, D) = \mathbb{E}_{ x \sim p_{\text{data}}} [\log(D(x))] + \mathbb{E}_{z \sim p(z)} [\log(1-D(G(z)))]  + \mathbb{E}_{z \sim p(z)} [ f ( G(z) ) ]
+\end{align*}
+
+The proof proceeds as follows: We first simplify the objective function into two terms. The first term is the Jensen–Shannon divergence between the data distribution and the distribution induced by the generator~\cite{gan}. The second term is the expected value of the secondary objective function $f$. We then show that the problem is convex, where strong duality holds. We then use the KKT conditions to find the functional form of the optimal solution, which gives us Theorem~\ref{thm_disjoint}.
+
+We only prove the statement for discrete sample space, and we let $n$ be the size of the sample space -- the random variable $x$ can take on $n$ different values.
+
+\textit{Proof}. Since the third term in the objective function is not a function of the discriminator $D$, for $G$ fixed, the optimal discriminator of Eq.~\ref{eq:joint_nodual} is $D^*_G(x) = \dfrac{ p_{\text{data}} (x) }{ p_{ \text{data} } (x) + p_{g }(x) }$ where $p_g$ is the distribution induced by the generator $G$.
+ (similar to Prop 1 in \cite{gan} ).
+
+Similarly to how \cite{gan} shows that the GAN objective in Eq.~\ref{eq:vanilla_gan} minimizes the JS divergence between the data distribution and the distribution induced by the generator, we can now rewrite the objective in Eq.~\ref{eq:joint_nodual} as:
+\begin{align}
+     & V(G, D^*_G)\\
+     & = \mathbb{E}_{ x \sim p_{\text{data}}} [\log(D^*_G(x))] + \mathbb{E}_{z \sim p(z)} [\log(1-D^*_G(G(z)))]  + \mathbb{E}_{z \sim p(z)} [ f ( G(z) ) ] \\
+    %  & = \mathbb{E}_{ x \sim p_{\text{data}}} [\log(D^*_G(x))] + \mathbb{E}_{x \sim p_g} [\log(1-D^*_G(x))]  + \mathbb{E}_{z \sim p(z)} [ f ( G(z) ) ] \\
+    %  & = \mathbb{E}_{ x \sim p_{\text{data}}} [\log( \dfrac{ p_{\text{data} }(x) }{ p_{\text{data} } (x) + p_{ g } (x) } )] + \mathbb{E}_{x \sim p_g} [\log(1 - \dfrac{ p_{\text{data} } (x) }{ p_{ \text{data} } (x) + p_{g } (x) } )]  + \mathbb{E}_{x \sim p_g} [ f ( x ) ] \\
+    %  & = \mathbb{E}_{ x \sim p_{\text{data}}} [\log( \dfrac{ p_{\text{data} }(x) }{ p_{\text{data} } (x) + p_{ g } (x) } )] + \mathbb{E}_{x \sim p_g} [\log( \dfrac{ p_g (x) }{ p_{ \text{data} } (x) + p_{ g } (x) } )] + \mathbb{E}_{x \sim p_g} [ f ( x ) ] \\
+    %  & = \mathbb{E}_{ x \sim p_{\text{data}}} [\log( \dfrac{ p_{\text{data} }(x) }{ ( p_{\text{data} } (x) + p_{ g } (x) ) / 2 } ) - \log 2] + \mathbb{E}_{x \sim p_g} [\log( \dfrac{ p_g (x) }{ ( p_{ \text{data} } (x) + p_{ g } (x) ) / 2 } ) - \log 2]  + \mathbb{E}_{x \sim p_g} [ f ( x ) ] \\ 
+    %  & = KL \left( p_{\text{data}} || \dfrac{ p_{\text{data} } (x) + p_{ g } (x) }{ 2 } \right) + KL \left( p_g || \dfrac{ p_{\text{data} } (x) + p_{ g } (x) }{ 2 } \right) - \log 4 + \mathbb{E}_{x \sim p_g} [ f ( x ) ] \\ 
+     & = 2JSD( p_{\text{data}} || p_g ) + \mathbb{E}_{x \sim p_g} [ f ( x ) ] - \log 4 
+\end{align}
+
+For conciseness, let $g^{(i)} = p_g(x_i)$ be the probability that $p_g$ assigns to $x_i$  and $g = [g^{(1)}, \ldots, g^{(n)}]^T$ be a column vector containing the probabilities that $p_g$ assigns to each possible values of $x$, from $x_1$ to $x_n$. 
+
+Similarly, let $f^{(i)} = f(x_i)$ be the value that the secondary objective $f$ assigns to $x_i$. We also overload the notation to let $f = [f^{(1)}, \ldots, f^{(n)}]^T$ be a column vector containing the values that the secondary objective $f$ assigns to each possible value of the random variable $x$, from $x_1$ to $x_n$. 
+
+Also let $ p_{\text{data} }^{(i)} = p_{\text{data} } (x_i) $ be the probability that the data distribution assigns to $x_i$.
+
+We can then rewrite the problem in Eq.~\ref{eq:joint_nodual} in a standard form \cite{boyd2004convex} as:
+\begin{align}
+\min_{g} \quad & 2JSD( p_{\text{data}} || p_g )  + g^T f \\
+\textrm{s.t.} \quad & - g^{(i)} \leq 0 \label{eq:const_non_neg} \\
+  & \mathbf{1}^T g - 1 = 0 \label{eq:const_normalized}
+\end{align}
+where $\mathbf{1}$ is a column vector of $1$, which has the same number of entries as the vector $g$. The constraint \ref{eq:const_non_neg} ensures that the probability that $p_g$ assigns to any $x$ is non-negative and the constraint \ref{eq:const_normalized} ensures the probabilities sum up to $1$.
+
+The problem is convex because the objective function is a nonnegative weighted sum of two convex functions (JSD is convex because JSD is itself a nonnegative weighted sum of KL, which is a convex function). 
+
+Strong duality also holds because Slater's condition holds. A strictly feasible point for Slater's condition to hold is the uniform distribution, i.e. $g^{(i)} = \dfrac{1}{n}, \forall i$.
+
+The Lagrangian is:
+\begin{align}
+    L = 2JSD( p_{\text{data}} || p_g )  + g^T f - \sum_i \lambda^{(i)} g^{(i)} + \nu ( \mathbf{1}^T g - 1 )
+\end{align}
+where $\lambda^{(i)}$ and $\nu$ are the Lagrangian multipliers.
+
+For any $i \in [1, n]$, the partial derivative of the Lagrangian with respect to $g^{(i)}$ is:
+\begin{align}
+    \pdv{L}{ g^{(i)} } & = log \left( \dfrac{ 2g^{(i)} } { p_{\text{data} }^{(i)} + g^{(i)} } \right) + f^{ (i) } - \lambda^{(i)} + \nu
+ \end{align}
+
+% This is the derivation for the Lang
+% \begin{align}
+%     \pdv{L}{ g^{(i)} } & = \odv{}{ g^{(i)} } \left( p_{ \text{data} }^{ (i) } \log \left( \dfrac{ p_{\text{data} }^{(i)} } { \dfrac{ p_{\text{data} }^{(i)} + g^{(i)} }{ 2 } } \right) + g^{ (i) } \log \left( \dfrac{ g^{(i)} } { \dfrac{ p_{\text{data} }^{(i)} + g^{(i)} }{ 2 } } \right) + g^{ (i) } f^{ (i) } - \lambda_i g_i + \nu g_i \right) \\ 
+%      & = \odv{}{ g^{(i)} } \left( p_{ \text{data} }^{ (i) } \log \left( \dfrac{ 2 p_{\text{data} }^{(i)} } { p_{\text{data} }^{(i)} + g^{(i)} } \right) + g^{ (i) } \log \left( \dfrac{ 2g^{(i)} } { p_{\text{data} }^{(i)} + g^{(i)} } \right) + g^{ (i) } f^{ (i) } - \lambda_i g_i + \nu g_i \right) \\
+%      & = p_{ \text{data} }^{ (i) } \dfrac{ \odv{ \left( \dfrac{ 2 p_{\text{data} }^{(i)} } { p_{\text{data} }^{(i)} + g^{(i)} } \right) }{ g^{(i)} } }{ \dfrac{ 2 p_{\text{data} }^{(i)} } { p_{\text{data} }^{(i)} + g^{(i)} } } + \log \left( \dfrac{ 2g^{(i)} } { p_{\text{data} }^{(i)} + g^{(i)} } \right) + g^{ (i) } \dfrac{ \odv{ \left( \dfrac{ 2g^{(i)} } { p_{\text{data} }^{(i)} + g^{(i)} } \right) }{ g^{(i)} } }{ \left( \dfrac{ 2g^{(i)} } { p_{\text{data} }^{(i)} + g^{(i)} } \right) } + f^{ (i) } - \lambda_i + \nu \\ 
+%      & = log \left( \dfrac{ 2g^{(i)} } { p_{\text{data} }^{(i)} + g^{(i)} } \right) + f^{ (i) } - \lambda_i + \nu
+%  \end{align}
+
+% \begin{align}
+%     \odv{ \left( \dfrac{ 2 p_{\text{data} }^{(i)} } { p_{\text{data} }^{(i)} + g^{(i)} } \right) }{ g^{(i)} } & = (-1) 2 p_{\text{data} }^{(i)} ( p_{\text{data} }^{(i)} + g^{(i)} )^{-2} \\ 
+%     & = \dfrac{ - 2 p_{\text{data} }^{(i)} }{ ( p_{\text{data} }^{(i)} + g^{(i)} )^{2}  } \\
+%     \Longrightarrow p_{ \text{data} }^{ (i) } \dfrac{ \odv{ \left( \dfrac{ 2 p_{\text{data} }^{(i)} } { p_{\text{data} }^{(i)} + g^{(i)} } \right) }{ g^{(i)} } }{ \dfrac{ 2 p_{\text{data} }^{(i)} } { p_{\text{data} }^{(i)} + g^{(i)} } }
+%     & = p_{ \text{data} }^{ (i) } \dfrac{ \dfrac{ - 2 p_{\text{data} }^{(i)} }{ ( p_{\text{data} }^{(i)} + g^{(i)} )^{2}  } }{ \dfrac{ 2 p_{\text{data} }^{(i)} } { p_{\text{data} }^{(i)} + g^{(i)} } } \\ 
+%     & = \dfrac{-p_{ \text{data} }^{ (i) }}{ p_{\text{data} }^{(i)} + g^{(i)} }
+% \end{align}
+
+% \begin{align}
+% \odv{ \left( \dfrac{ 2g^{(i)} } { p_{\text{data} }^{(i)} + g^{(i)} } \right) }{ g^{(i)} } & =
+%  \dfrac{ 2 } { p_{\text{data} }^{(i)} + g^{(i)} } + 2g^{(i)} (-1) ( p_{\text{data} }^{(i)} + g^{(i)} )^{-2} \\ 
+%  & = \dfrac{ 2 } { p_{\text{data} }^{(i)} + g^{(i)} } - \dfrac{ 2g^{(i)} }{ ( p_{\text{data} }^{(i)} + g^{(i)} )^2 }  \\
+%  & = \dfrac{ 2 ( p_{\text{data} }^{(i)} + g^{(i)} ) - 2g^{(i)} }{ ( p_{\text{data} }^{(i)} + g^{(i)} )^2 } \\ 
+%  & = \dfrac{ 2 p_{\text{data} }^{(i)} }{ ( p_{\text{data} }^{(i)} + g^{(i)} )^2 } \\ 
+%  \Longrightarrow g^{ (i) } \dfrac{ \odv{ \left( \dfrac{ 2g^{(i)} } { p_{\text{data} }^{(i)} + g^{(i)} } \right) }{ g^{(i)} } }{ \left( \dfrac{ 2g^{(i)} } { p_{\text{data} }^{(i)} + g^{(i)} } \right) } & = g^{ (i) } \dfrac{ \dfrac{ 2 p_{\text{data} }^{(i)} }{ ( p_{\text{data} }^{(i)} + g^{(i)} )^2 } }{ \left( \dfrac{ 2g^{(i)} } { p_{\text{data} }^{(i)} + g^{(i)} } \right) } \\ 
+%  & = \dfrac{ p_{\text{data} }^{ (i) }                } { p_{\text{data} }^{(i)} + g^{(i)} }
+%  \end{align} 
+
+% End of derivation
+
+Let $g_*$ and $(\lambda_*, \nu_*)$ be the primal and dual optimal solutions of the optimization problem. As the strong duality holds, the variables $g_*$ and $(\lambda_*, \nu_*)$ must satisfy the KKT conditions. For any $i \in [1, n]$, the following holds:
+\begin{align}
+    -g_*^{(i)} & \leq 0 \\ 
+    \mathbf{1}^T g_* - 1 & = 0 \\ 
+    \lambda_*^{(i)} & \geq 0 \\ 
+    \lambda_*^{(i)} g_*^{(i)} & = 0 \label{eq:kkt_com_slack} \\ 
+    \pdv{L}{ g^{(i)} } = log \left( \dfrac{ 2g_*^{(i)} } { p_{\text{data} }^{(i)} + g_*^{(i)} } \right) + f^{ (i) } - \lambda_*^{(i)} + \nu_* & = 0 \label{eq:kkt_lang}
+\end{align}
+
+From \autoref{eq:kkt_lang}, we have $ \lambda_*^{(i)} = log \left( \dfrac{ 2g_*^{(i)} } { p_{\text{data} }^{(i)} + g_*^{(i)} } \right) + f^{ (i) } + \nu_* $, and substitute into \autoref{eq:kkt_com_slack}:
+
+\begin{align}
+    \left[ log \left( \dfrac{ 2g_*^{(i)} } { p_{\text{data} }^{(i)} + g_*^{(i)} } \right) + f^{ (i) } + \nu_* \right] g^*_i & = 0
+\end{align}
+
+We consider what happens when $g^*_i > 0$, due to complementary slackness, we have: 
+
+\begin{align}
+    \log \left( \dfrac{ 2g_*^{(i)} } { p_{\text{data} }^{(i)} + g_*^{(i)} } \right) + f^{ (i) } + \nu_* & = 0 \\ 
+    % \log \left( \dfrac{ 2g^{(i)} } { p_{\text{data} }^{(i)} + g^{(i)} } \right) & = -  f^{ (i) } - \nu \\ 
+    %  \dfrac{ 2g^{(i)} } { p_{\text{data} }^{(i)} + g^{(i)} } & = e^{-  f^{ (i) } - \nu} \\
+    %   2g^{(i)} & = (p_{\text{data} }^{(i)} + g^{(i)}) e^{-  f^{ (i) } - \nu} \\
+    %   2g^{(i)} & = p_{\text{data} }^{(i)}e^{-  f^{ (i) } - \nu} + g^{(i)}e^{-  f^{ (i) } - \nu}  \\
+    %   2g^{(i)} -  g^{(i)}e^{-  f^{ (i) } - \nu} & = p_{\text{data} }^{(i)}e^{-  f^{ (i) } - \nu} \\
+    %   g^{(i)} ( 2 - e^{-  f^{ (i) } - \nu} ) & = p_{\text{data} }^{(i)}e^{-  f^{ (i) } - \nu} \\
+     \Longrightarrow g_*^{(i)} & = \dfrac{ p_{\text{data} }^{(i)}e^{-  f^{ (i) } - \nu_* } }{ ( 2 - e^{-  f^{ (i) } - \nu_* } ) } \\
+     p^*_g(x_i) & = p_{\text{data} } (x_i) \dfrac{ e^{- f (x_i)  - \nu_* } } { 2 - e^{-  f(x_i)  - \nu_* } }
+\end{align}
+We can then pick an appropriate value for the Lagrange multiplier $\nu$ such that the probabilities $p^*_g(x_i)$ normalize to 1. QED.
+
+
+\subsection{Proof for Theorem~\ref{thm_joint_in_support_max} }
+
+
+In the following proof, we use $p_{\text{data}}$ to refer to the real data distribution, instead of $p_\mathcal{D}$ as in Section~\ref{sec:dual_gen}, to avoid confusion with the discriminator distribution.
+
+Recall that we define $p_{mix}$ as $p_{mix} = \dfrac{ p_g + p_{aux} }{ 2 }$. Theorem \ref{thm_joint_in_support_max} is stated in reference to the optimization problem in Eq.~\ref{eq:joint_gan}, which we restate here:
+
+\begin{align}
+    \min_{G, G_{aux} } \max_{D} \quad & V(G, G_{aux}, D) = \mathbb{E}_{ x \sim p_{\text{data}} } [\log(D(x))] + \mathbb{E}_{ x \sim p_{mix} } [ \log(1-D(x))]  + \mathbb{E}_{ x \sim p_g } [ f ( x ) ] \label{eq:joint_gan_explicit_constraint_obj} 
+\end{align}
+
+where the first two terms in the objective function are the GAN objective and the last term is the secondary objective function. 
+
+Similar to the proof for Theorem \ref{thm_disjoint}, we can rewrite the objective function in Eq.~\ref{eq:joint_gan_explicit_constraint_obj} as \cite{gan}:
+\begin{align}
+     & V(G, G_{aux}, D^*)\\
+     & = 2JSD( p_{\text{data}} || \dfrac{ p_g + p_{aux} }{ 2 } ) + \mathbb{E}_{x \sim p_g} [ f ( x ) ] - \log 4 \label{eq:joint_gan_wih_jsd}
+\end{align}
+
+We are only interested in optimizing for the secondary objective function $f$ in the space of optimal GAN solutions. We therefore enforce that $p_{mix} = \dfrac{ p_g + p_{aux} }{ 2 } = p_{\text{data}}$, which makes the JSD term vanish in Eq.~\ref{eq:joint_gan_wih_jsd} and allows us to solve the following optimization problem.
+\begin{align}
+    \min_{G } \quad & \mathbb{E}_{x \sim p_g} [ f ( x ) ] \\ 
+\textrm{s.t.} \quad & p_g \leq 2 p_{\text{data}} \label{eq:joint_gan_explicit_constraint_simplified_constraint_1} \\
+& p_{aux} = 2 p_{\text{data}} - p_g \label{eq:joint_gan_explicit_constraint_simplified_constraint_2}
+\end{align}
+
+% \begin{align}
+%     \min_{G, G_{aux} } \max_{D} \quad & \mathbb{E}_{ x \sim p_{\text{data}} } [\log(D(x))] + \mathbb{E}_{ x \sim p_{mix} } [ \log(1-D(x))]  + \mathbb{E}_{ x \sim p_g } [ f ( x ) ], \\ 
+% \textrm{s.t.} \quad & \dfrac{ p_g + p_{aux} }{ 2 } = p_{\text{data}} \label{eq:joint_gan_explicit_constraint}
+% \end{align}
+
+We claim that the solution to the optimization problem above is as follows. We define $x_0$ to be the element inside the support of the data distribution $p_{\text{data}}$ that minimizes $f$, i.e. $ x_0 = \underset{x \in \text{Supp}( p_{\text{data}} ) }{\arg\min} f(x) $.
+The optimal primary generator $p^*_g$ assigns the following probability to $x_0$:
+\begin{align}
+    p^*_{g} (x_0) & = \begin{cases}
+    2p_{\text{data}} (x_0) \quad  \text{if} \quad 2p_{\text{data}} (x_0) < 1 \\
+    1 \quad \quad  \quad \quad \text{otherwise}
+    \end{cases}
+\end{align}
+
+If the global maximum $x_0$ is not taking the full probability mass, the rest of the probability mass is redistributed to the next best in-support maxima, which 
+we can define recursively:
+\begin{align}
+         \text{For} \,\, x_i \in \underset{x \in \text{Supp}( p_{\text{data}} )  \setminus \{ x_j \}_{j=0}^{i-1} }{\arg\min} f(x), \,\,
+    p^*_{g} (x_i) & = \begin{cases}
+      2p_{\text{data}} (x_i)\quad \quad \quad \quad \,\,\, \text{if} \quad \sum_{j=0}^i p^*_g(x_j) < 1 \\
+      1 -  \sum_{j=0}^{i-1} p^*_g(x_j) \quad \,\, \text{if} \quad \sum_{j=0}^i p^*_g(x_j) > 1 \\ 
+      0 \quad \quad \quad \quad \quad \quad \quad \quad  \text{if} \quad \sum_{j=0}^{i-1} p^*_g(x_j) = 1 
+    \end{cases}       
+\end{align}
+
+\textit{Proof.} 
+
+
+
+We show the proof by contradiction. That is, assume that there exists another distribution $p^a_g$ with the following properties:
+\begin{itemize}
+    \item There exists $x$ where $p^a_g(x) \neq p_g^*(x)$
+    \item $p^a_g$ satisfies the constraint (\ref{eq:joint_gan_explicit_constraint_simplified_constraint_1})-(\ref{eq:joint_gan_explicit_constraint_simplified_constraint_2})
+    \item The value of the objective function achieved by $p^a_g$ is better than the value achieved by $p_g^*$. That is, $\mathbb{E}_{x \sim p^a_g} [ f ( x ) ] < \mathbb{E}_{x \sim p^*_g} [ f ( x ) ]$.
+\end{itemize}
+We will show that the existence of such a distribution $p^a_g$ will lead to contradiction,
+
+We separate the analyses into three different cases, depending on the property of $p_g^*$: 
+\begin{itemize}
+    \item Case 1: $p_g^*$ assigns all probability mass to $x_0$
+    \item Case 2: If $p_g^*$ assigns non-zero probability to $x$, then $p_g^* = 2p_{\text{data}} (x)$
+    \item Case 3: There exists an $x$ where $ 2 p_{\text{data}} (x) >  p_g^*(x) > 0$ 
+\end{itemize}
+
+We will walk through the three cases independently and show the contradiction in each case.
+
+\textbf{Case 1:} $p^*_{g}$ assigns the full probability mass to $x_0$, that is $p^*_{g} (x_0) = 1$, and assigns zero probability to every $x$ not equal to $x_0$. Without loss of generality, we consider $p_g$ that assigns non-zero probability to a $x_k \neq x_0$, assigns the remaining probability mass to $x_0$, and assigns zero probability to all $x$ that is not equal to either $x_0$ or $x_k$. That is, assume there exists $p^a_g$ such that:
+\begin{align}
+    0 > p^a_g (x_0) & > 1 \\ 
+    p^a_g (x_k) & = 1 - p^a_g (x_0) > 0 \text{ for some } x_k \in \text{Supp}( p_{\text{data}} ) \\ 
+    \mathbb{E}_{ x \sim p^*_g } [ f ( x ) ] - \mathbb{E}_{ x \sim p^a_g } [ f ( x ) ]& > 0 \label{eq:case_1_contra}
+\end{align}
+where $x_k \in \text{Supp}( p_{\text{data}} ) $ follows from constraint \ref{eq:joint_gan_explicit_constraint_simplified_constraint_1} ($p_g \leq 2 p_{\text{data}} $, and thus $p^a_g$ can only assign non-zero probability to $x$ within the support of $p_{\text{data}}$).
+We can then show that:
+\begin{align}
+\mathbb{E}_{ x \sim p^*_g } & [ f ( x ) ] - \mathbb{E}_{ x \sim p^a_g } [ f ( x ) ] \\
+= & f(x_0) - p^a_g (x_0) f(x_0) - p^a_g (x_k) f(x_k) \\
+= & ( 1 - p^a_g (x_0) ) f(x_0) - p^a_g (x_k) f(x_k) \\
+= & p^a_g (x_k) f(x_0) - p^a_g (x_k) f(x_k) \\
+= & p^a_g (x_k) [ f(x_0) - f(x_k) ] \leq 0 \text{ (contradiction with Eq.} \ref{eq:case_1_contra} )
+\end{align}
+where the last inequity follows from these two facts:
+\begin{align}
+    x_0 & = \underset{x \in \text{Supp}( p_{\text{data}} ) }{\arg\min} f(x) \\
+    x_k & \in \text{Supp}( p_{\text{data}} )
+\end{align}
+
+\textbf{Case 2:} 
+\begin{align}
+    p^*_{g} (x) & = \begin{cases}
+    2p_{\text{data}} (x) \quad  \text{if} \quad p^*_{g} (x) > 0 \\
+    0 \quad \quad  \quad \quad \text{otherwise}
+    \end{cases}
+\end{align}
+
+Let $\{ x_0, \ldots, x_i \}$ be the set of x where $p^*_{g} (x) > 0$, then we also require that $\sum_{j=0}^i p^*_{g} (x) = 1 $.
+
+Without loss of generality, we assume a distribution $p^a_g$ exists with the following properties. There exists $x_m, x_n$ such that:
+\begin{align}
+    p^*_{g} (x_m) = 2p_{\text{data}} (x_m) > 0 \quad & \text{ and } \quad  p^a_g (x_m) < 2p_{\text{data}} (x_m) \\
+    p^*_{g} (x_n) = 0 \quad & \text{ and } \quad p^a_g (x_n) = 2p_{\text{data}} (x_m) - p^a_g (x_m) > 0  \\
+    p^*_{g} (x) & = p^a_g (x) \text{ otherwise (that is, for all } x \notin \{x_m, x_n\}) \\ 
+    \mathbb{E}_{ x \sim p^*_g } [ f ( x ) ] - \mathbb{E}_{ x \sim p^a_g } [ f ( x ) ] & > 0 \label{eq:case_2_contra}
+\end{align}
+We note that $f(x_m) \leq f(x_n)$ since $p^*_{g}$ assigns non-zero probability to $x_m$ and assigns zero probability to $x_n$.
+
+We can show that:
+\begin{align}
+\mathbb{E}_{ x \sim p^*_g } & [ f ( x ) ] - \mathbb{E}_{ x \sim p^a_g } [ f ( x ) ] \\
+= & p^*_g (x_m) f(x_m) - p^a_g (x_m) f(x_m) - p^a_g (x_n) f(x_n) \\ 
+= & p^*_g (x_m) f(x_m) - p^a_g (x_m) f(x_m) - p^a_g (x_n) f(x_n) \\ 
+= & p^*_g (x_m) f(x_m) - p^a_g (x_m) f(x_m) - (2p_{\text{data}} (x_m) - p^a_g (x_m)) f(x_n) \\ 
+= & p^*_g (x_m) f(x_m) - p^a_g (x_m) f(x_m) - 2p_{\text{data}} (x_m) f(x_n) + p^a_g (x_m) f(x_n) \\ 
+= & p^*_g (x_m) f(x_m) - p^a_g (x_m) f(x_m) - p^*_g (x_m) f(x_n) + p^a_g (x_m) f(x_n) \\ 
+= & p^*_g (x_m) [f(x_m) - f(x_n)] - p^a_g (x_m) [f(x_m) - f(x_n)] \\ 
+= & [f(x_m) - f(x_n)] [p^*_g (x_m)  - p^a_g (x_m)] \leq 0 \text{ (contradiction with Eq.} \ref{eq:case_2_contra} )
+\end{align}
+where the last inequality is true because $f(x_m) \leq f(x_n)$ as we noted above, and $p^*_g (x_m) = 2p_{\text{data}} (x_m) > p^a_g (x_m)$.
+
+\textbf{Case 3:}
+
+There exists $x_i$ such that $2p_{\text{data}} (x_i) > p^*_g(x_i) > 0$.
+For all $x \neq x_i$:
+\begin{align}
+    p^*_{g} (x) & = \begin{cases}
+    2p_{\text{data}} (x) \quad  \text{if} \quad p^*_{g} (x) > 0 \\
+    0 \quad \quad  \quad \quad \text{otherwise}
+    \end{cases}
+\end{align}
+
+Let $\{ x_0, \ldots, x_i \}$ be the set of x where $p^*_{g} (x) > 0$, we also require $\sum_{j=0}^i p^*_{g} (x) = 1 $.
+
+Without loss of generality, there are three cases we need to consider for the distribution $p^a_g$, each yielding a contradiction:
+\begin{itemize}
+    \item $p^a_g (x_i) = p^*_g(x_i)$, but there exists $x$ such that $p^a_g (x) \neq p^*_g(x)$.
+    \item $p^a_g (x_i) > p^*_g(x_i)$.
+    \item $p^a_g (x_i) < p^*_g(x_i)$.
+\end{itemize} 
+In each case, the proof by contradiction is similar to the proof in Case 2 above, where we pick a pair of $x_m, x_n$ and shows that $p^a_g$ can not achieve a lower value of the objective function than $p^*_g$. We thus do not repeat the argument here. QED
+
+

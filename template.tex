@@ -115,11 +115,26 @@
 \usepackage{xcolor}
 \usepackage{graphicx}
 
+\usepackage{amsmath, amscd, amssymb, amsthm}
+\usepackage{thmtools}
+
+\usepackage{thm-restate}
+
+\usepackage{bm}
+
 \newcommand{\explain}[2]{\underbrace{#1}_{\parbox{\widthof{\ensuremath{#1}}}{\footnotesize\raggedright #2}}}
 
-%% AMS PACKAGES - Chances are you will want some or all 
-%    of these if writing a dissertation that includes equations.
- \usepackage{amsmath, amscd, amssymb, amsthm}
+\DeclareMathAlphabet{\mathsfit}{\encodingdefault}{\sfdefault}{m}{sl}
+\SetMathAlphabet{\mathsfit}{bold}{\encodingdefault}{\sfdefault}{bx}{n}
+
+% \newtheorem{theorem}{Theorem}[section]
+\declaretheorem[name=Theorem,numberwithin=section]{thm}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Tr}{Tr}
 
 %% BONUS MATH
 %  \usepackage{mathtools} 
@@ -210,6 +225,8 @@
 \usepackage{array}  % Enables "m" tabular environment http://ctan.org/pkg/array
 \usepackage{booktabs}  % Enables \toprule  http://ctan.org/pkg/array
 
+\include{defs}
+\include{math_commands}
 
 
 \begin{document}
@@ -237,7 +254,6 @@
 % Of course, if you prefer, you can just start with
 %   \chapter{My First Chapter Name}
 % and start typing away.  
-
 \include{chapter_1/main}
 
 \include{chapter_2/main}

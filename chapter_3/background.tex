@@ -1,0 +1,50 @@
+\section{Background}
+
+Let $\mathcal{M} = (\mathcal{S}, \mathcal{A}, P, R, \gamma)$ define a Markov decision process (MDP), where $\mathcal{S}$ and $\mathcal{A}$ are state and action spaces, $P: \mathcal{S} \times \mathcal{A} \times \mathcal{S} \rightarrow \mathbb{R}_{+}$ is a state-transition probability function, $R: \mathcal{S} \times \mathcal{A} \rightarrow \mathbb{R}$ is a reward function and $\gamma$ is a discount factor. Reinforcement learning methods aim at finding a policy $\pi(a | s)$ that maximizes the expected discounted reward $R(\tau) = \sum_{t=0}^T \gamma^t R(s_t,a_t)$  over trajectories $\tau = (s_0, a_0, \dots, s_T, a_T)$ with time horizon $T$ induced by the policy $\pi$. 
+
+In this work, we concentrate on the offline or off-policy RL setting, i.e. finding an optimal policy given a dataset $\mathcal{D}$ of previously collected experience $\tau \sim \mathcal{D}$ by a behavior policy $\pi_\beta$. A particularly popular family of methods for offline learning are based on training a Q-function through dynamic programming using temporal-difference (TD) learning~\cite{watkins1992q,sutton1998}. Such methods train a Q-function to satisfy the Bellman equation:
+ \[
+ Q (s_t, a_t) = R(s_t, a_t) + \gamma \mathbb{E}_{a\sim\pi} [Q(s_{t+1}, a)].
+ \]
+ $\pi(a | s) = \argmax_a Q_\theta(s,a)$
+In Q-learning, the policy is replaced with a maximization, such that $\pi(a | s) = \argmax_a Q_\theta(s,a)$, while actor-critic methods optimize a separate parametric policy $\pi_\phi(a | s)$ that maximizes the Q-function. In this work, we extend the Soft Actor-Critic (SAC) method ~\cite{Haarnoja18} for learning from diverse offline datasets.
+
+Generative Adversarial Networks (GANs)~\cite{GoodfellowPMXWOCB14} enable modeling a data distribution $p_{\mathcal{D}}$ through an adversarial game between a generator $G$ and a discriminator $D$:
+% \begin{align}
+%     \min_{\psi} \max_{\eta}  \mathbb{E}_{ x \sim p_{\mathcal{D}}} [\log(D_\eta(x))] + \mathbb{E}_{z \sim p(z)} [\log(1-D_\eta(G_\psi(z)))]
+% \end{align}
+\begin{align}
+    \min_{G} \max_{D}  \mathbb{E}_{ x \sim p_{\mathcal{D}}} [\log(D(x))] + \mathbb{E}_{z \sim p(z)} [\log(1-D(G(z)))]
+    \label{eq:vanilla_gan}
+\end{align}
+
+For this two player zero-sum game, \cite{GoodfellowPMXWOCB14} shows that for a fixed generator $G$, the optimal discriminator is $ D^*_G(x) = \dfrac{ p_{\mathcal{D} } (x) }{ p_{\mathcal{D} } (x) + p_{G }(x) }$ and the optimal generator matches the data distribution $ p^*_g(x) = p_{\mathcal{D}} $.
+
+% The GAN framework has been used to model expert policy distributions through generative adversarial imitation learning (GAIL)~\cite{gail}. However, we note that GAIL 
+%%SL.5.18: This is a bit of a red herring, since we are not actually building on GAIL (in fact, it might even be good to make it clear we are talking about GANs over *actions* not GAIL-style GANs over states)
+GAN has been extended to the offline RL setting by interpreting the discriminator function as a measure of how likely an action is under the behavior policy, and jointly optimizing the policy to maximize an estimate of the long-term return and the discriminator function~\cite{brac}: 
+\begin{align}
+    \min_{\pi} \max_{D}  \mathbb{E}_{ s, a \sim p_{\mathcal{D}}} [\log(D(s,a))] + \mathbb{E}_{ s \sim p_{\mathcal{D}}, a \sim \pi(a|s) } [\log(1 - D(s,a))] - \mathbb{E}_{s \sim p_{\mathcal{D}}, a \sim \pi(a|s)} [ Q(s, a) ], \label{eq:brac}
+\end{align}
+%%SL.5.18: It feels like it might be a good idea to discuss the connection between this formulation and CQL, but I'm not sure where to do that -- it seems like it belongs more in related work, but it's probably a bit too technical for the related work section. Or maybe after we talk about how prior methods don't succeed, we can briefly remark that a latest approach (CQL) kind of does this but not exactly, and then say we'll compare to it?
+where $Q(s,a)$ is trained via the Bellman operator to approximate the value function of the policy $\pi(a|s)$.
+%Our algorithm is an actor-critic method, which alternates between policy evaluation and improvement steps. We begin the description of our algorithm by first introduc the objective functions that have been used in prior works. Since we study the offline RL problem, both the policy evaluation and improvement steps are performed using states from the offline dataset. 
+This leads to iterative policy evaluation and policy improvement rules for the actor and the policy~\cite{brac}. During the $k^{th}$ update step, given the most recent values for the policy $\pi^{k}$, the value function $Q^{k}$, and the discriminator $D^k$, we perform the following updates to obtain the next values for the value function and the policy:
+\begin{align}
+\begin{split}
+\label{eq:brac_update}
+    Q^{k+1} \leftarrow& \argmin_{Q} \E_{s, a, s' \sim \mathcal{D}}\left[ \left((R(s, a) +  \gamma \E_{a' \sim {\policy}^k(a'|s')}[Q^{k}(s', a')]) - Q_{target}(s, a)\right)^2 \right]\\ 
+    \policy^{k+1} \leftarrow& \argmax_{\policy} \E_{s \sim \mathcal{D}, a \sim \policy^k(a|s)}\left[Q^{k+1}(s, a) + \log D^k(s,a) \right]
+\end{split}
+\end{align}
+where the $\log D(a|s)$ term in the policy objective aims at regularizing the learnt policy to prevent it from outputting OOD actions. In practice, training the policy to maximize both the value function and discriminator might lead to conflicting objectives for the policy and thus poor performance on either objective.
+This can happen when the data contains a mixture of good and bad actions. Maximizing the value function would mean avoiding low-reward behaviors. On the other hand, maximizing the discriminator would require outputting all in-distribution actions, including sub-optimal ones. Our approach alleviates this conflict and enables \textit{in support} maximization of the value function when learning from mixed-quality datasets.
+
+%he addition of $\log D(\ba|\bs)$ to the policy objective is often referred as policy regularization, in contrast to adding $\log D(\ba|\bs)$ to the value function target.
+
+
+% Although aimed at enabling in-support optimization of the policy,
+%%SL.5.18: the above (standard GAN) is not actually trying to do support, it's just a standard (JSD) distribution constraint
+% in practice, maximizing both the Q-values and discriminator scores leads to conflicting objectives for the policy $\pi$ and often to unstable training.
+%%SL.5.18: will this statement come across as controversial? maybe it's ok, but it kind of just seems to be asserted without evidence
+

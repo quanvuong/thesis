@@ -1,0 +1,170 @@
+%% editing comment
+\newcommand{\cmt}[1]{{\footnotesize\textcolor{red}{#1}}}
+\newcommand{\cmto}[1]{{\footnotesize\textcolor{orange}{#1}}}
+\newcommand{\note}[1]{\cmt{Note: #1}}
+\newcommand{\todo}[1]{\cmt{TO-DO: #1}}
+\newcommand{\question}[1]{\cmto{Question: #1}}
+\newcommand{\sergey}[1]{{\footnotesize\textcolor{blue}{Sergey: #1}}}
+\newcommand{\ak}[1]{{\textcolor{red}{#1}}}
+\newcommand{\aviral}[1]{{\textcolor{red}{#1}}}
+\newcommand{\rishabh}[1]{{\textcolor{green}{#1}}}
+\newcommand{\edits}[1]{\textcolor{blue}{#1}}
+\newcommand{\editsred}[1]{\textcolor{red}{#1}}
+\newcommand{\editsp}[1]{\textcolor{purple}{#1}}
+\newcommand{\editsv}[1]{\textcolor{magenta}{#1}}
+
+% \newcommand{\edits}[1]{\textcolor{black}{#1}}
+% \newcommand{\editsred}[1]{\textcolor{black}{#1}}
+% \newcommand{\editsp}[1]{\textcolor{black}{#1}}
+% \newcommand{\editsv}[1]{\textcolor{black}{#1}}
+
+
+%% abbreviations
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\z}{\mathbf{z}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\w}{\mathbf{w}}
+\newcommand{\data}{\mathcal{D}}
+
+\newcommand{\etal}{{et~al.}\ }
+\newcommand{\eg}{\emph{e.g.},\ }
+\newcommand{\ie}{\emph{i.e.},\ }
+\newcommand{\nth}{\text{th}}
+\newcommand{\pr}{^\prime}
+\newcommand{\tr}{^\mathrm{T}}
+\newcommand{\inv}{^{-1}}
+\newcommand{\pinv}{^{\dagger}}
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\gauss}{\mathcal{N}}
+\newcommand{\norm}[1]{\left|#1\right|}
+\newcommand{\trace}{\text{tr}}
+
+%% specifics for the paper
+\newcommand{\reward}{r}
+\newcommand{\policy}{\pi}
+\newcommand{\mdp}{\mathcal{M}}
+\newcommand{\states}{\mathcal{S}}
+\newcommand{\actions}{\mathcal{A}}
+\newcommand{\observations}{\mathcal{O}}
+\newcommand{\transitions}{T}
+\newcommand{\initstate}{d_0}
+\newcommand{\freq}{d}
+\newcommand{\obsfunc}{E}
+\newcommand{\initial}{\mathcal{I}}
+\newcommand{\horizon}{H}
+\newcommand{\rewardevent}{R}
+\newcommand{\probr}{p_\rewardevent}
+\newcommand{\metareward}{\bar{\reward}}
+\newcommand{\discount}{\gamma}
+\newcommand{\behavior}{{\pi_\beta}}
+\newcommand{\bellman}{\mathcal{B}}
+\newcommand{\qparams}{\phi}
+\newcommand{\qparamset}{\Phi}
+\newcommand{\qset}{\mathcal{Q}}
+\newcommand{\batch}{B}
+\newcommand{\qfeat}{\mathbf{f}}
+\newcommand{\Qfeat}{\mathbf{F}}
+\newcommand{\hatbehavior}{\hat{\pi}_\beta}
+
+\newcommand{\traj}{\tau}
+
+\newcommand{\pihi}{\pi^{\text{hi}}}
+\newcommand{\pilo}{\pi^{\text{lo}}}
+\newcommand{\ah}{\mathbf{w}}
+
+\newcommand{\proj}{\Pi}
+
+\newcommand{\loss}{\mathcal{L}}
+\newcommand{\eye}{\mathbf{I}}
+
+\newcommand{\model}{\hat{p}}
+
+\newcommand{\pimix}{\pi_{\text{mix}}}
+
+\newcommand{\pib}{\bar{\pi}}
+\newcommand{\epspi}{\epsilon_{\pi}}
+\newcommand{\epsmodel}{\epsilon_{m}}
+
+\newcommand{\return}{\mathcal{R}}
+
+%% math
+\newcommand{\cY}{\mathcal{Y}}
+\newcommand{\cX}{\mathcal{X}}
+\newcommand{\en}{\mathcal{E}}
+\newcommand{\bu}{\mathbf{u}}
+\newcommand{\bv}{\mathbf{v}}
+\newcommand{\bb}{\mathbf{b}}
+\newcommand{\bd}{\mathbf{d}}
+\newcommand{\be}{\mathbf{e}}
+\newcommand{\by}{\mathbf{y}}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\bz}{\mathbf{z}}
+\newcommand{\bw}{\mathbf{w}}
+\newcommand{\boldm}{\mathbf{m}}
+\newcommand{\bo}{\mathbf{o}}
+\newcommand{\bs}{\mathbf{s}}
+\newcommand{\ba}{\mathbf{a}}
+\newcommand{\bM}{\mathbf{M}}
+\newcommand{\ot}{\bo_t}
+\newcommand{\st}{\bs_t}
+\newcommand{\at}{\ba_t}
+\newcommand{\op}{\mathcal{O}}
+\newcommand{\opt}{\op_t}
+\newcommand{\kl}{D_\text{KL}}
+\newcommand{\tv}{D_\text{TV}}
+\newcommand{\ent}{\mathcal{H}}
+\newcommand{\bG}{\mathbf{G}}
+\newcommand{\byk}{\mathbf{y_k}}
+\newcommand{\bI}{\mathbf{I}}
+\newcommand{\bg}{\mathbf{g}}
+\newcommand{\bV}{\mathbf{V}}
+\newcommand{\bD}{\mathbf{D}}
+\newcommand{\bR}{\mathbf{R}}
+\newcommand{\bQ}{\mathbf{Q}}
+\newcommand{\bA}{\mathbf{A}}
+\newcommand{\bN}{\mathbf{N}}
+\newcommand{\bS}{\mathbf{S}}
+\newcommand{\bW}{\mathbf{W}}
+\newcommand{\bU}{\mathbf{U}}
+\newcommand{\bO}{\mathbf{O}}
+\newcommand{\leftnorm}{\left\vert \left\vert}
+\newcommand{\rightnorm}{\right\vert \right\vert}
+
+\newcommand{\bzhi}{\bz^\text{hi}}
+\newcommand{\expected}{\mathbb{E}}
+\newcommand{\srank}{\text{srank}}
+\newcommand{\rank}{\text{rank}}
+\newcommand{\deepnet}{\bW_N(k, t) \bW_\phi(k, t)}
+\newcommand{\features}{\bW_\phi(k, t)}
+\newcommand{\stateactioni}{[\bs_i; \ba_i]}
+\newcommand{\diag}{\text{\textbf{diag}}}
+\newcommand{\cosine}{\text{cos}}
+
+
+\def\thetaP{\theta^{\prime}}
+\def\cf{\emph{c.f.}\ }
+\def\vs{\emph{vs}.\ }
+\def\etc{\emph{etc.}\ }
+\def\Eqref#1{Equation~\ref{#1}}
+\def\ss#1{\scriptsize #1}
+
+\newenvironment{repeatedthm}[1]{\@begintheorem{#1}{\unskip}}{\@endtheorem}
+
+\newcommand{\methodname}{DR3}
+\newcommand{\aliasingproblemname}{bootstrapping aliasing}
+\newcommand{\Aliasingproblemname}{Bootstrapping aliasing}
+\newcommand{\AliasingProblemName}{Bootstrapping Aliasing}
+\newcommand{\simnorm}{\mathrm{sim}_{\mathrm{n}}^\pi}
+\newcommand{\simunnorm}{\mathrm{sim}_{\mathrm{u}}^\pi}
+
+\newcommand{\gjt}[1]{\textcolor{red}{[gjt: #1]}}
+
+
+\def\bellmanop{T^\circ}
+\def\qop{Q^\circ}
+\def\qpi{Q^\pi}
+\def\qs{Q^*}
+\def\Qstar{Q^*}
+\def\Qt{Q_{\theta}}
+\def\Qtp{Q_{\thetaP}}
+\def\ld{\ell_{\lambda}}
