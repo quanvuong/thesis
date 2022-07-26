@@ -17,3 +17,8 @@
 \section{Conclusions}
 
 In this paper, we introduced \name{}, a GAN-based offline RL method that addresses the challenges of training policies as generators with a discriminator to minimize deviation from the behavior policy by means of two modifications: an auxiliary generator to turn the GAN loss into a support constraint, and a value function weight in the policy objective. The auxiliary generator makes it possible for the policy to focus on maximizing the value function without needing to match the \emph{entirety} of the data distribution, only that part of it that has high value, effectively turning the standard distributional constraint that would be enforced by a conventional GAN into a kind of support constraint. This technique may in fact be of interest in other settings where there is a need to maximize some objective in addition to fooling a discriminator, and applications of this approach outside of reinforcement learning are an exciting direction for future work. Further, since our method enables GAN-based strategies to attain good results on a range of offline RL benchmark tasks, it would also be interesting in future work to consider other types of GAN losses that induce different divergence measures. We also plan to explore robust methods for offline policy and hyper-parameter selection in the future.
+
+\section{Acknowledgement}
+
+Computing needs were supported by the Nautilus Pacific Research Platform. Chapter 3, in part, is a reprint of material from Quan Vuong, Aviral Kumar, Sergey Levine, Yevgen Chebotar. ``Dual Generator Offline Reinforcement Learning". In submission at Neural Information Processing Systems, 2022.
+
